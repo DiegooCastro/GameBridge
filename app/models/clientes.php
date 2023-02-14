@@ -10,10 +10,7 @@ class Clientes extends Validator
     private $dui = null;
     private $correo = null;
     private $clave = null;
-    private $fecha = null;
-    private $intentos = null;
-
-
+    private $accion = null;
 
     //METODOS PARA ASIGNAR EL VALOR A LOS ATRIBUTOS
     public function setId($value)
@@ -36,17 +33,6 @@ class Clientes extends Validator
         }
     }
 
-    public function setFecha($value)
-    {
-        // Validamos el tipo de dato del valor ingresado
-        if ($this->validateDate($value)) {
-            $this->fecha = $value;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public function setNombres($value)
     {
         if ($this->validateAlphanumeric($value, 1, 40)) {
@@ -57,16 +43,12 @@ class Clientes extends Validator
         }
     }
 
-    public function setIntentos($value)
+    public function setAccion($value)
     {
-        // Validamos el tipo de dato del valor ingresado
-        if ($this->validateNaturalNumber($value)) {
-            $this->intentos = $value;
-            return true;
-        } else {
-            return false;
-        }
+        $this->accion = $value;
+        return true;
     }
+
     public function setApellidos($value)
     {
         if ($this->validateAlphanumeric($value, 1, 40)) {
@@ -118,11 +100,6 @@ class Clientes extends Validator
         return $this->nombres;
     }
 
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
-
     public function getApellido()
     {
         return $this->apellidos;
@@ -131,6 +108,11 @@ class Clientes extends Validator
     public function getDui()
     {
         return $this->dui;
+    }
+
+    public function getEstado()
+    {
+        return $this->estado;
     }
 
     public function getCorreo()
@@ -143,106 +125,72 @@ class Clientes extends Validator
         return $this->clave;
     }
 
-    public function getIntentos()
-    {
-        return $this->intentos;
-    }
-
-    // METODOS PARA REALIZAR LAS OPERACIONES SCRUD 
-
     //Metodo search de clientes
-    public function busquedaFiltrada($value)
+    public function searchRows($value)
     {
-        $sql = 'SELECT idCliente as id, e.estado as estado,nombres,apellidos,dui,correo_electronico
+        $sql = 'SELECT idCliente , estado ,nombres,apellidos,dui,correo_electronico
         FROM clientes c
-        INNER JOIN estadoCliente e ON c.estado = e.idEstado
-        WHERE nombres ILIKE ? OR apellidos ILIKE ?
+        WHERE correo_electronico ILIKE ? OR dui ILIKE ?
         ORDER BY nombres';
         $params = array("%$value%", "%$value%");
         return Database::getRows($sql, $params);
     }
 
     //Metodo para registrar a un cliente
-    public function ingresarDatos()
+    public function createRow()
     {
         $sql = 'INSERT INTO clientes(idcliente, estado, nombres, apellidos, dui, correo_electronico, clave, fecharegistro) 
-        VALUES (default, 1, ?, ?, ?, ?, ?, default)';
+        VALUES (default, default, ?, ?, ?, ?, ?, default)';
         $params = array($this->nombres, $this->apellidos, $this->dui, $this->correo, $this->clave);
         return Database::executeRow($sql, $params);
     }
 
     //Metodo para cargar los registros de cliente
-    public function cargarDatos()
+    public function readAll()
     {
-        $sql = "SELECT idCliente as id, e.estado as estado,nombres,apellidos,dui,correo_electronico, CONCAT(nombres,' ',apellidos) as nombre
+        $sql = "SELECT idCliente, estado,nombres,apellidos,dui,correo_electronico
         FROM clientes c
-        INNER JOIN estadoCliente e ON c.estado = e.idEstado
         ORDER BY nombres";
         $params = null;
         return Database::getRows($sql, $params);
     }
 
-    //Metodo para cargar las direcciones de un cliente
-    public function cargarDatosParam($idCliente)
-    {
-        $sql = 'SELECT direccion as direccion,codigo_postal as codigo,telefono_fijo as telefono
-        from direcciones d where cliente = ?';
-        $params = array($idCliente);
-        return Database::getRows($sql, $params);
-    }
-
     //Metodo para cargar los datos de un cliente
-    public function cargarFila()
+    public function readOne()
     {
-        $sql = 'SELECT idCliente as id, nombres, apellidos,dui,correo_electronico as correo,e.estado as estado,clave
+        $sql = 'SELECT idCliente, nombres, apellidos,dui,correo_electronico,clave
         FROM clientes c
-        INNER JOIN estadoCliente e ON c.estado = e.idEstado
         WHERE idCliente = ?';
         $params = array($this->id);
         return Database::getRow($sql, $params);
     }
 
     //Metodo para actualizar los datos de un cliente
-    public function actualizarDatos()
+    public function updateRow()
     {
         $sql = 'UPDATE clientes
-        SET estado= ?,nombres=?,apellidos=?,dui=?,correo_electronico=?
-        WHERE idcliente=?';
-        $params = array($this->estado, $this->nombres, $this->apellidos, $this->dui, $this->correo, $this->id);
+        SET nombres = ?,apellidos = ?,correo_electronico = ?
+        WHERE idCliente = ?';
+        $params = array($this->nombres, $this->apellidos, $this->correo, $this->id);
         return Database::executeRow($sql, $params);
     }
 
     //Metodo para eliminar un cliente
-    public function eliminarDatos()
+    public function deleteRow()
     {
-        $sql = 'DELETE FROM clientes WHERE idCliente = ?';
-        $params = array($this->id);
-        return Database::executeRow($sql, $params);
-    }
-
-    //espacio para el sitio publico
-    public function registerClient()
-    {
-        // Se encripta la clave por medio del algoritmo bcrypt que genera un string de 60 caracteres.
-        $hash = password_hash($this->clave, PASSWORD_DEFAULT);
-        $sql = 'INSERT INTO clientes(idcliente, estado, nombres, apellidos, dui, correo_electronico, clave, fecharegistro,fechaclave) 
-        VALUES (default, 1, ?, ?, ?, ?, ?, default,default)';
-        $params = array($this->nombres, $this->apellidos, $this->dui, $this->correo, $hash);
+        $sql = 'UPDATE clientes set estado = ? where idCliente = ?';
+        $params = array($this->accion,$this->id);
         return Database::executeRow($sql, $params);
     }
 
     //Metodo para obtener el correo del cliente para el log in
     public function checkUser($correo)
     {
-        $sql = "SELECT idcliente, estado, nombres,fechaclave, intentos FROM clientes WHERE correo_electronico = ?";
+        $sql = 'SELECT idcliente, estado, nombres FROM clientes WHERE correo_electronico = ?';
         $params = array($correo);
         if ($data = Database::getRow($sql, $params)) {
             $this->id = $data['idcliente'];
             $this->estado = $data['estado'];
-            $this->nombres = $data['nombres'];
-            $this->fecha = $data['fechaclave'];
-            $this->intentos = $data['intentos'];
-
             $this->correo = $correo;
             return true;
         } else {
@@ -254,7 +202,7 @@ class Clientes extends Validator
     public function checkState($usuario)
     {
         // Declaracion de la sentencia SQL 
-        $sql = 'SELECT idcliente from clientes where correo_electronico = ? and estado = 1';
+        $sql = 'SELECT idcliente from clientes where correo_electronico = ? and estado = true';
         $params = array($usuario);
         // Se compara si los datos ingresados coinciden con el resultado obtenido de la base de datos
         if ($data = Database::getRow($sql, $params)) {
@@ -264,18 +212,6 @@ class Clientes extends Validator
         }
     }
 
-    // Funcion para desactivar un usuario requiere de parametro el nombre de usuario
-    public function desactivateUser($user)
-    {
-        // Declaracion de la sentencia SQL 
-        $sql = 'UPDATE clientes
-        SET estado = 2
-        WHERE correo_electronico = ?;';
-        // Creacion de arreglo para almacenar los parametros que se enviaran a la clase database
-        $params = array($user);
-        return Database::executeRow($sql, $params);
-    }
-
     //Metodo para obtener la contraseña del cliente para el log in
     public function checkPassword($password)
     {
@@ -283,41 +219,11 @@ class Clientes extends Validator
         $params = array($this->id);
         $data = Database::getRow($sql, $params);
         $this->clave = $password;
-
         if (password_verify($password, $data['clave'])) {
             return true;
         } else {
             return false;
         }
-    }
-
-    //Metodo para cargar los datos del cliente
-    public function readProfile()
-    {
-        $sql = 'SELECT idcliente, correo_electronico,nombres, apellidos, dui
-                FROM clientes
-                WHERE idcliente = ?';
-        $params = array($_SESSION['idcliente']);
-        return Database::getRow($sql, $params);
-    }
-
-    //Metodo para actualizar los datos de un cliente
-    public function editProfile()
-    {
-        $sql = 'UPDATE clientes
-                SET  correo_electronico = ?, nombres = ?, apellidos = ?, dui = ?
-                WHERE idcliente = ?';
-        $params = array($this->correo, $this->nombres, $this->apellidos, $this->dui, $_SESSION['idcliente']);
-        return Database::executeRow($sql, $params);
-    }
-
-    //Metodo para cambiar la contraseña
-    public function changePassword()
-    {
-        $hash = password_hash($this->clave, PASSWORD_DEFAULT);
-        $sql = 'UPDATE clientes SET clave = ?, fechaclave=default WHERE idcliente = ?';
-        $params = array($hash, $_SESSION['idcliente']);
-        return Database::executeRow($sql, $params);
     }
 
     //Metodo para cargar las facturas de un cliente
@@ -331,68 +237,6 @@ class Clientes extends Validator
         inner join Categorias c on p.Categoria = c.idCategoria
         where cl.idcliente = ? and f.estado=2 and f.fecha = current_date";
         $params = array($this->id);
-        return Database::getRows($sql, $params);
-    }
-
-
-    // Funcion para actualizar un usuario en la base de datos
-    public function updatePassword()
-    {
-        // Se encripta la clave por medio del algoritmo bcrypt que genera un string de 60 caracteres.
-        $hash = password_hash($this->clave, PASSWORD_DEFAULT);
-        $sql = 'UPDATE clientes set clave = ? , estado = 1, intentos=0, fechaclave=default where correo_electronico = ?';
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base        
-        $params = array($hash, $this->correo);
-        return Database::executeRow($sql, $params);
-    }
-
-    public function checkDate($fecha)
-    {
-        // Declaracion de la sentencia SQL 
-        $sql = "SELECT diasClave(?)";
-        $params = array($fecha);
-        $data = Database::getRow($sql, $params);
-        if ($data['diasclave'] < 90) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    public function intentosCliente($intentos)
-    {
-        $sql = 'UPDATE clientes set intentos = ? where correo_electronico = ?';
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base        
-        $params = array($intentos, $this->correo);
-        return Database::executeRow($sql, $params);
-    }
-
-
-    public function historialCliente()
-    {
-        $hash = php_uname();
-        $sql = 'INSERT INTO historialCliente values (default,?,?,default)';
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base        
-        $params = array($this->id, $hash);
-        return Database::executeRow($sql, $params);
-    }
-
-
-    public function readDevices()
-    {
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'SELECT distinct sistema from historialCliente where cliente=? ';
-        $params = array($_SESSION['idcliente']);
-        return Database::getRows($sql, $params);
-    }
-
-
-    public function readHistory($device)
-    {
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'SELECT hora from historialCliente where sistema=? order by hora desc limit 5  ';
-        $params = array($device);
         return Database::getRows($sql, $params);
     }
 }

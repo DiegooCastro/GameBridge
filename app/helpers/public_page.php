@@ -11,135 +11,92 @@ class Public_Page
     *
     *   Retorno: ninguno.
     */
-    public static function headerTemplate($title,$css)
+    public static function headerTemplate($title)
     {
-              // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en las páginas web.
-              session_start();
-              // Se imprime el código HTML para el encabezado del documento.
-              print('
-                  <!DOCTYPE html>
-                  <html lang="es">
-                      <head>
-                          <meta charset="utf-8">
-                          <title>GameBridge | '.$title.'</title>
-                          <link type="text/css" rel="stylesheet" href="../../resources/css/materialize.min.css"/>
-                          <link type="text/css" rel="stylesheet" href="../../resources/css/material_icons.css"/>
-                          <link type="text/css" rel="stylesheet" href="../../resources/css/'.$css.'.css"/>
-                          <link rel="icon" type="image/png" href="../../resources/img/brand/Logo.png" />
-                          <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-                      </head>
-                      <body>
-              ');
-              // Se obtiene el nombre del archivo de la página web actual.
-              $filename = basename($_SERVER['PHP_SELF']);
-              // Se comprueba si existe una sesión de cliente para mostrar el menú de opciones, de lo contrario se muestra otro menú.
-              if (isset($_SESSION['idcliente'])) {
-                  // Se verifica si la página web actual es diferente a login.php y register.php, de lo contrario se direcciona a index.php
-                  if ($filename != 'login.php'&& $filename != 'singin.php') {
-                       // Se llama al método que contiene el código de las cajas de dialogo (modals).
-                    self::modals();
-                    if ($filename != 'autentication.php' && $filename != 'password.php') {
-                        print('        
-                        <header>
-                              <div class="navbar-fixed" id="navbar">
-                                  <nav class="navbarColor">
-                                      <div class="nav-wrapper">                  
-                                      <a title="Logo" href="index.php"><img src="../../resources/img/brand/Navbar.png" class="hide-on-med-and-down" alt="Logo" /></a>
-                                          <a href="#" data-target="mobile-sidenav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                                          <ul class="right hide-on-med-and-down">
-                                              <li><a href="#" class="dropdown-trigger" data-target="dropdown"><i class="material-icons left">verified_user</i><b>' . $_SESSION['correo_electronico'] . '</b></a></li>
-                                              <li><a href="hardware.php">Hardware</a></li>
-                                              <li><a href="perifericos.php">Periféricos</a></li>
-                                              <li><a href="accesorios.php">Accesorios</a></li>
-                                              <li><a href="Servicios.php">Servicios</a></li>
-                                              <li><a class="tooltipped" data-tooltip="Carrito de compras" href="carrito.php"><i class="material-icons">local_grocery_store</i></a></li>
-                                              <li><a class="tooltipped" data-tooltip="Historial productos" href="historial.php"><i class="material-icons">book</i></a></li>
-                                              <li><a class="tooltipped" data-tooltip="Pedidos" href="pedidos.php"><i class="material-icons">local_shipping</i></a></li>    
-                                          </ul>
-                                        <ul id="dropdown" class="dropdown-content">
-                                        <li><a href="#" onclick="openProfileDialog()" class = "black-text"><i class="material-icons">face</i>Editar perfil</a></li>
-                                        <li><a href="#" onclick="openPasswordDialog()"class = "black-text"><i class="material-icons">lock</i>Cambiar clave</a></li>
-                                        <li><a href="#" onclick="viewDevices()"class = "black-text"><i class="material-icons">devices</i>Mis dispositivos</a></li>
-
-                                        <li><a href="#" onclick="logOut()"class = "black-text"><i class="material-icons">clear</i>Salir</a></li>
-                                         </ul>
-                                      </div>
-                                  </nav>
-                              </div>
-                              <!--Navegación lateral para dispositivos móviles-->
-                              <ul class="sidenav centrar" id="mobile-sidenav">
-                              
-                                  <a title="Logo" href="index.php"><img src="../../resources/img/brand/logo_submenu.png" class="logo-submenu" alt="Logo-Submenu" /></a><hr>
-                                  <li><a href="#" class="dropdown-trigger" data-target="dropdown-mobile"><i class="material-icons left">verified_user</i> <b>' . $_SESSION['correo_electronico'] . '</b></a></li>
-                                  <li><a href="hardware.php"><i class="material-icons">desktop_windows</i><p>Hardware</p></a></li>
-                                  <li><a href="perifericos.php"><i class="material-icons">headset_mic</i><p>Perifericos</p></a></li>
-                                  <li><a href="accesorios.php"><i class="material-icons">mic</i><p>Accesorios</p></a></li>
-                                  <li><a href="Servicios.php"><i class="material-icons">local_shipping</i><p>Servicios</p></a></li>
-                                  <hr>
-                                  <li><a href="carrito.php"><i class="material-icons">local_grocery_store</i><p>Carrito</p></a></li>
-                                  <li><a href="historial.php"><i class="material-icons">book</i><p>Historial productos</p></a></li>
-                                  <li><a href="pedidos.php"><i class="material-icons">local_shipping</i><p>Pedidos</p></a></li>
-
-                              </ul>
-                              <ul id="dropdown-mobile" class="dropdown-content dropdown">
-                        <li><a href="#" onclick="openProfileDialog()"><i class="material-icons">face</i>Editar perfil</a></li>
-                        <li><a href="#" onclick="openPasswordDialog()"><i class="material-icons">lock</i>Cambiar clave</a></li>
-                        <li><a href="#" onclick="viewDevices()"class = "black-text"><i class="material-icons">devices</i>Mis dispositivos</a></li>
-
-                        <li><a href="#" onclick="logOut()"><i class="material-icons">clear</i>Salir</a></li>
+        // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en las páginas web.
+        session_start();
+        // Se imprime el código HTML para el encabezado del documento.
+        print('
+            <!DOCTYPE html>
+            <html lang="es">
+                <head>
+                    <meta charset="utf-8">
+                    <title>Coffeeshop - '.$title.'</title>
+                    <link type="image/png" rel="icon" href="../../resources/img/logo.png"/>
+                    <link type="text/css" rel="stylesheet" href="../../resources/css/materialize.min.css"/>
+                    <link type="text/css" rel="stylesheet" href="../../resources/css/material_icons.css"/>
+                    <link type="text/css" rel="stylesheet" href="../../resources/css/public.css"/>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                </head>
+                <body>
+        ');
+        // Se obtiene el nombre del archivo de la página web actual.
+        $filename = basename($_SERVER['PHP_SELF']);
+        // Se comprueba si existe una sesión de cliente para mostrar el menú de opciones, de lo contrario se muestra otro menú.
+        if (isset($_SESSION['id_cliente'])) {
+            // Se verifica si la página web actual es diferente a login.php y register.php, de lo contrario se direcciona a index.php
+            if ($filename != 'login.php' && $filename != 'signin.php') {
+                print('
+                    <header>
+                        <div class="navbar-fixed">
+                            <nav class="green">
+                                <div class="nav-wrapper">
+                                    <a href="index.php" class="brand-logo"><img src="../../resources/img/logo.png" height="60"></a>
+                                    <a href="#" data-target="mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                                    <ul class="right hide-on-med-and-down">
+                                        <li><a href="index.php"><i class="material-icons left">view_module</i>Inicio</a></li>
+                                        <li><a href="catalogo.php"><i class="material-icons left">view_module</i>Catálogo</a></li>
+                                        <li><a href="cart.php"><i class="material-icons left">shopping_cart</i>Carrito</a></li>
+                                        <li><a href="#" onclick="logOut()"><i class="material-icons left">close</i>Cerrar sesión</a></li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                        <ul class="sidenav" id="mobile">
+                            <li><a href="index.php"><i class="material-icons left">view_module</i>Catálogo</a></li>
+                            <li><a href="cart.php"><i class="material-icons left">shopping_cart</i>Carrito</a></li>
+                            <li><a href="#" onclick="logOut()"><i class="material-icons left">close</i>Cerrar sesión</a></li>
                         </ul>
-                          </header>
-                          <main> 
-                      ');
-                    }
-                      
-                  } else {
-                      header('location: index.php');
-                  }
-              } else {
-                  // Se verifica si la página web actual es diferente a index.php (Iniciar sesión) y a register.php (Crear primer usuario) para direccionar a index.php, de lo contrario se muestra un menú vacío.
-                  if ($filename != 'pedidos.php' && $filename != 'historial.php' && $filename != 'carrito.php') {
-                      if ($filename != 'login.php' && $filename != 'codigo.php' && $filename != 'clave.php' && $filename != 'autentication.php' && $filename != 'password.php') {
-                        print('
-                        <header>
-                            <div class="navbar-fixed" id="navbar">
-                                <nav class="navbarColor">
-                                    <div class="nav-wrapper">                  
-                                    <a title="Logo" href="index.php"><img src="../../resources/img/brand/Navbar.png" class="hide-on-med-and-down" alt="Logo" /></a>
-                                        <a href="#" data-target="mobile-sidenav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                                        <ul class="right hide-on-med-and-down">
-                                            <li><a href="hardware.php">Hardware</a></li>
-                                            <li><a href="perifericos.php">Periféricos</a></li>
-                                            <li><a href="accesorios.php">Accesorios</a></li>
-                                            <li><a href="servicios.php">Servicios</a></li>
-                                            <li><a href="singin.php">Registrate</a></li>
-                                            <li><a class="tooltipped" data-tooltip="Iniciar sesión" href="login.php"><i class="material-icons">person</i></a></li>
-                                        </ul>
-                                    </div>
-                                </nav>
-                            </div>
-                            <!--Navegación lateral para dispositivos móviles-->
-                            <ul class="sidenav centrar" id="mobile-sidenav">
-                                <a title="Logo" href="index.php"><img src="../../resources/img/brand/logo_submenu.png" class="logo-submenu" alt="Logo-Submenu" /></a><hr>
-                                <li><a href="hardware.php"><i class="material-icons">desktop_windows</i><p>Hardware</p></a></li>
-                                <li><a href="perifericos.php"><i class="material-icons">headset_mic</i><p>Perifericos</p></a></li>
-                                <li><a href="accesorios.php"><i class="material-icons">mic</i><p>Accesorios</p></a></li>
-                                <li><a href="Servicios.php"><i class="material-icons">local_shipping</i><p>Servicios</p></a></li>
-                                <hr>
-                                <li><a href="singin.php"><i class="material-icons">add</i><p>Registrarse</p></a></li>
-                                <li><a href="LogIn.php"><i class="material-icons">person</i><p>Iniciar Sesion</p></a></li>
-                            </ul>
-                        </header>
-                        <main> 
-                    ');
-                      }
-                  } else {
-                      header('location: login.php');
-                  }    
-       
-       
+                    </header>
+                    <main>
+                ');
+            } else {
+                header('location: index.php');
+            }
+        } else {
+            // Se verifica si la página web actual es diferente a index.php (Iniciar sesión) y a register.php (Crear primer usuario) para direccionar a index.php, de lo contrario se muestra un menú vacío.
+            if ($filename != 'cart.php') {
+                print('
+                    <header>
+                        <div class="navbar-fixed">
+                            <nav class="green">
+                                <div class="nav-wrapper">
+                                    <a href="index.php" class="brand-logo"><img src="../../resources/img/logo.png" height="60"></a>
+                                    <a href="#" data-target="mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                                    <ul class="right hide-on-med-and-down">
+                                        <li><a href="index.php"><i class="material-icons left">view_module</i>Inicio</a></li>
+                                        <li><a href="catalogo.php"><i class="material-icons left">view_module</i>Catálogo</a></li>
+                                        <li><a href="signin.php"><i class="material-icons left">person</i>Crear cuenta</a></li>
+                                        <li><a href="login.php"><i class="material-icons left">login</i>Iniciar sesión</a></li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                        <ul class="sidenav" id="mobile">
+                            <li><a href="index.php"><i class="material-icons left">view_module</i>Inicio</a></li>
+                            <li><a href="catalogo.php"><i class="material-icons left">view_module</i>Catálogo</a></li>
+                            <li><a href="signin.php"><i class="material-icons left">person</i>Crear cuenta</a></li>
+                            <li><a href="login.php"><i class="material-icons left">login</i>Iniciar sesión</a></li>
+                        </ul>
+                    </header>
+                    <main>
+                ');
+            } else {
+                header('location: login.php');
+            }
+        }
+
     }
-}
 
     /*
     *   Método para imprimir la plantilla del pie.
@@ -150,357 +107,262 @@ class Public_Page
     */
     public static function footerTemplate($controller)
     {
-        $filename = basename($_SERVER['PHP_SELF']);
-        if (isset($_SESSION['idcliente'])) {
-            if ($filename != 'autentication.php') {
-                print('
-    </main> 
-
-    <footer class="page-footer" id="footer">
-                <div class="container">
-                    <div class="row">
-                        
-                        <div id="contacto" class="col s12 m6 l6 xl3">
-                            
-                            <h6>Contactanos</h6>
-                            <div class="row espacioIconos">
-                                <div class="col s3">
-                                    <img src="../../resources/img/iconos/telefono.png" alt="telefono">
-                                </div>
-                                <div class="col s9">
-                                    <p>7988-5288</p>
-                                </div>
-                            </div>
-                            <div class="row espacioIconos">
-                                <div class="col s3">
-                                    <img src="../../resources/img/iconos/whatsapp.png" alt="whatsapp">
-                                </div>
-                                <div class="col s9">
-                                    <p>2593-1265</p>
-                                </div>
-                            </div>
-        
-                            <div class="row">
-                                <div class="col s3">
-                                    <img src="../../resources/img/iconos/correo.png" alt="correo">
-                                </div>
-                                <div class="col s9">
-                                    <p>GbStore@gmail.com</p>
-                                </div>
-                            </div>        
-                        </div>
-        
-                        <div id="redes" class="col s12 m6 l6 xl3">
-                            <h6>Redes sociales</h6>
-                            <div class="row">
-                                <div class="col s3">
-                                    <img src="../../resources/img/iconos/facebook.png" alt="facebook">
-                                </div>
-                                <div class="col s9">
-                                    <p>Gamebridge Store</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col s3">
-                                    <img src="../../resources/img/iconos/instagram.png" alt="instagram">
-                                </div>
-                                <div class="col s9">
-                                    <p>Gamebridge Store SV</p>
-                                </div>
-                            </div>
-                                
-                        </div>
-                        <div class="col s12 m6 l6 xl3 textoDireccion hide-on-med-and-down ">
-                   
-                            <h6>Ubicación</h6>
-                            <div class="row">
-                                <div class="col s9">
-                                    <p>Avenida Aguilares 218 San Salvador CP, 1101</p>
-                                </div>
-                            </div>
-                                
-                        </div>
-                        <div id="ubicacion" class="col s12 m6 l6 xl3">
-                            <h6>Mapa</h6>
-                            <img src="../../resources/img/servicios/Ubicacion.jpg" alt="Ubicacion">
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-copyright">
-                    <div class="container centrar">
-                        © 2021 Gamebridge Derechos Reservados
-                    </div>
-                </div>
-            </footer>
-    <!--Importación de archivos JavaScript al final del cuerpo para una carga optimizada-->
-    <script type="text/javascript" src="../../resources/js/materialize.min.js"></script>
-    <script type="text/javascript" src="../../app/controllers/initialization.js"></script>
-    <script type="text/javascript" src="../../resources/js/materialize.min.js"></script>
-    <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
-    <script type="text/javascript" src="../../app/helpers/components.js"></script>
-    <script type="text/javascript" src="../../app/controllers/public/initialization.js"></script>
-    <script type="text/javascript" src="../../app/controllers/public/account.js"></script>
-    <script type="text/javascript" src="../../app/controllers/public/logout.js"></script>
-    <script type="text/javascript" src="../../app/controllers/public/'.$controller.'"></script>
-    </body>
-    </html>
-    ');
-    } else {
+        // Se imprime el código HTML para el pie del documento.
         print('
-        </main> 
-            <!--Importación de archivos JavaScript al final del cuerpo para una carga optimizada-->
-            <script type="text/javascript" src="../../resources/js/materialize.min.js"></script>
-            <script type="text/javascript" src="../../app/controllers/initialization.js"></script>
-            <script type="text/javascript" src="../../resources/js/materialize.min.js"></script>
-            <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
-            <script type="text/javascript" src="../../app/helpers/components.js"></script>
-            <script type="text/javascript" src="../../app/controllers/public/initialization.js"></script>
-            <script type="text/javascript" src="../../app/controllers/public/account.js"></script>
-            <script type="text/javascript" src="../../app/controllers/public/logout.js"></script>
-        <script type="text/javascript" src="../../app/controllers/public/'.$controller.'"></script>
-        </body>
-        </html> 
+                    <!-- Contenedor para mostrar efecto parallax con una altura de 300px e imagen aleatoria -->
+                    <div class="parallax-container">
+                        <div class="parallax">
+                            <img id="parallax">
+                        </div>
+                    </div>
+                </main>
+                <footer class="page-footer green">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col s12 m6 l6">
+                                <h5 class="white-text">Nosotros</h5>
+                                <p>
+                                    <blockquote>
+                                        <a href="#mision" class="modal-trigger white-text"><b>Misión</b></a>
+                                        <span>|</span>
+                                        <a href="#vision" class="modal-trigger white-text"><b>Visión</b></a>
+                                        <span>|</span>
+                                        <a href="#valores" class="modal-trigger white-text"><b>Valores</b></a>
+                                    </blockquote>
+                                    <blockquote>
+                                        <a href="#terminos" class="modal-trigger white-text"><b>Términos y condiciones</b></a>
+                                    </blockquote>
+                                </p>
+                            </div>
+                            <div class="col s12 m6 l6">
+                                <h5 class="white-text">Contáctanos</h5>
+                                <p>
+                                    <blockquote>
+                                        <a class="white-text" href="https://www.facebook.com/" target="_blank"><b>facebook</b></a>
+                                        <span>|</span>
+                                        <a class="white-text" href="https://twitter.com/" target="_blank"><b>twitter</b></a>
+                                    </blockquote>
+                                    <blockquote>
+                                        <a class="white-text" href="https://www.instagram.com/" target="_blank"><b>instagram</b></a>
+                                        <span>|</span>
+                                        <a class="white-text" href="https://www.youtube.com/" target="_blank"><b>youtube</b></a>
+                                    </blockquote>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-copyright">
+                        <div class="container">
+                            <span>© Coffeeshop, todos los derechos reservados.</span>
+                            <span class="grey-text text-lighten-4 right">Diseñado con <a class="red-text text-accent-1" href="http://materializecss.com/" target="_blank"><b>Materialize</b></a></span>
+                        </div>
+                    </div>
+                </footer>
+                <script type="text/javascript" src="../../resources/js/materialize.min.js"></script>
+                <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
+                <script type="text/javascript" src="../../app/helpers/components.js"></script>
+                <script type="text/javascript" src="../../app/controllers/public/initialization.js"></script>
+                <script type="text/javascript" src="../../app/controllers/public/account.js"></script>
+                <script type="text/javascript" src="../../app/controllers/public/'.$controller.'"></script>
+            </body>
+            </html>
         ');
-            }
-            
-            
+    }
 
-        }else{
+    public static function headerTemplate2($title,$page)
+    {
+        session_start();
+        $filename = basename($_SERVER['PHP_SELF']);
 
-            if ($filename != 'login.php' && $filename != 'autentication.php' && $filename != 'codigo.php' && $filename != 'clave.php') {
-                print('<footer class="page-footer" id="footer">
-                <div class="container">
-                    <div class="row">
-                        
-                        <div id="contacto" class="col s12 m6 l6 xl3">
-                            
-                            <h6>Contactanos</h6>
-                            <div class="row espacioIconos">
-                                <div class="col s3">
-                                    <img src="../../resources/img/iconos/telefono.png" alt="telefono">
-                                </div>
-                                <div class="col s9">
-                                    <p>7988-5288</p>
-                                </div>
-                            </div>
-                            <div class="row espacioIconos">
-                                <div class="col s3">
-                                    <img src="../../resources/img/iconos/whatsapp.png" alt="whatsapp">
-                                </div>
-                                <div class="col s9">
-                                    <p>2593-1265</p>
-                                </div>
-                            </div>
+        print('
+        <!DOCTYPE html>
+        <html lang="es">
         
-                            <div class="row">
-                                <div class="col s3">
-                                    <img src="../../resources/img/iconos/correo.png" alt="correo">
-                                </div>
-                                <div class="col s9">
-                                    <p>GbStore@gmail.com</p>
-                                </div>
-                            </div>        
-                        </div>
+        <head>
+          <meta charset="utf-8">
+          <meta content="width=device-width, initial-scale=1.0" name="viewport">
         
-                        <div id="redes" class="col s12 m6 l6 xl3">
-                            <h6>Redes sociales</h6>
-                            <div class="row">
-                                <div class="col s3">
-                                    <img src="../../resources/img/iconos/facebook.png" alt="facebook">
-                                </div>
-                                <div class="col s9">
-                                    <p>Gamebridge Store</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col s3">
-                                    <img src="../../resources/img/iconos/instagram.png" alt="instagram">
-                                </div>
-                                <div class="col s9">
-                                    <p>Gamebridge Store SV</p>
-                                </div>
-                            </div>
-                                
-                        </div>
-                        <div class="col s12 m6 l6 xl3 textoDireccion hide-on-med-and-down ">
-                   
-                            <h6>Ubicación</h6>
-                            <div class="row">
-                                <div class="col s9">
-                                    <p>Avenida Aguilares 218 San Salvador CP, 1101</p>
-                                </div>
-                            </div>
-                                
-                        </div>
-                        <div id="ubicacion" class="col s12 m6 l6 xl3">
-                            <h6>Mapa</h6>
-                            <img src="../../resources/img/servicios/Ubicacion.jpg" alt="Ubicacion">
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-copyright">
-                    <div class="container centrar">
-                        © 2021 Gamebridge Derechos Reservados
-                    </div>
-                </div>
-            </footer>');
-            }
+          <title>'.$title.'</title>
+
+          <!-- Favicons -->
+          <link type="image/png" rel="icon" href="../../resources/img/brand/icono.png"/>
+        
+          <!-- Google Fonts -->
+          <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+        
+          <!-- Vendor CSS Files -->
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+          <link href="../../framework/aos/aos.css" rel="stylesheet">
+          <link href="../../framework/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+          <link href="../../framework/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+          <link href="../../framework/boxicons/css/boxicons.min.css" rel="stylesheet">
+          <link href="../../framework/glightbox/css/glightbox.min.css" rel="stylesheet">
+          <link href="../../framework/swiper/swiper-bundle.min.css" rel="stylesheet">
+        
+          <!-- Template Main CSS File -->
+          <link href="../../resources/css/styles.css" rel="stylesheet">
+        ');
+
+        if ($filename == 'productos.php') {
             print('
-        
-    </main> 
-    <!--Importación de archivos JavaScript al final del cuerpo para una carga optimizada-->
-    <script type="text/javascript" src="../../resources/js/materialize.min.js"></script>
-    <script type="text/javascript" src="../../app/controllers/initialization.js"></script>
-    <script type="text/javascript" src="../../resources/js/materialize.min.js"></script>
-    <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
-    <script type="text/javascript" src="../../app/helpers/components.js"></script>
-    <script type="text/javascript" src="../../app/controllers/public/initialization.js"></script>
-    <script type="text/javascript" src="../../app/controllers/public/'.$controller.'"></script>
-</body>
-</html>
-
-                   
-        ');
+                <link href="../../resources/css/cards.css" rel="stylesheet">
+            ');
         }
 
-        // Se imprime el código HTML para el pie del documento.
+        // Se obtiene el nombre del archivo de la página web actual.
+        $filename = basename($_SERVER['PHP_SELF']);
+        // Se comprueba si existe una sesión de cliente para mostrar el menú de opciones, de lo contrario se muestra otro menú.
+        if (isset($_SESSION['id_cliente'])) {
+            // Se verifica si la página web actual es diferente a login.php y register.php, de lo contrario se direcciona a index.php
+            if ($filename != 'login.php' && $filename != 'signin.php') {
+                print('
+                </head>
+
+                <body>
         
+                <!-- ======= Top Bar ======= -->
+                <section id="topbar" class="d-flex align-items-center">
+                  <div class="container d-flex justify-content-center justify-content-md-between">
+                    <div class="contact-info d-flex align-items-center">
+                      <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:Gamebridge@gmail.com">Gamebridge@gmail.com</a></i>
+                      <i class="bi bi-phone d-flex align-items-center ms-4"><span>+503 7988 5288</span></i>
+                    </div>
+                    <div class="social-links d-none d-md-flex align-items-center">
+                      <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                      <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                      <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                      <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></i></a>
+                    </div>
+                  </div>
+                </section>
+              
+                <header id="header" class="d-flex align-items-center">
+                  <div class="container d-flex justify-content-between">
+              
+                    <div class="logo">
+                      <h1 class="text-light"><a href="index.php">GameBridge</a></h1>
+                    </div>
+              
+                    <nav id="navbar" class="navbar">
+                      <ul>
+                        <li><a class="nav-link scrollto " href="index.php">Inicio</a></li>
+                        <li><a class="nav-link scrollto " href="catalogos.php">Catalogo</a></li>
+                        <li><a class="nav-link scrollto" href="cart.php">Carrito</a></li>
+                        <li><a class="nav-link scrollto"> Usuario: '.$_SESSION['correo_cliente'].'</a></li>
+                        
+                      </ul>
+                      <i class="bi bi-list mobile-nav-toggle"></i>
+                    </nav><!-- .navbar -->
+              
+                  </div>
+                </header>
+                ');
+            } else {
+                header('location: index.php');
+            }
+        } else {
+            // Se verifica si la página web actual es diferente a index.php (Iniciar sesión) y a register.php (Crear primer usuario) para direccionar a index.php, de lo contrario se muestra un menú vacío.
+            if ($filename != 'cart.php') {
+                print('
+                <body>
+        
+                <section id="topbar" class="d-flex align-items-center">
+                  <div class="container d-flex justify-content-center justify-content-md-between">
+                    <div class="contact-info d-flex align-items-center">
+                      <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:Gamebridge@gmail.com">Gamebridge@gmail.com</a></i>
+                      <i class="bi bi-phone d-flex align-items-center ms-4"><span>+503 7988 5288</span></i>
+                    </div>
+                    <div class="social-links d-none d-md-flex align-items-center">
+                      <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                      <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                      <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                      <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></i></a>
+                    </div>
+                  </div>
+                </section>
+              
+                <header id="header" class="d-flex align-items-center">
+                  <div class="container d-flex justify-content-between">
+              
+                    <div class="logo">
+                      <h1 class="text-light"><a href="index.php">GameBridge</a></h1>
+                    </div>
+              
+                    <nav id="navbar" class="navbar">
+                      <ul>
+                        <li><a class="nav-link scrollto " href="index.php">Inicio</a></li>
+                        <li><a class="nav-link scrollto " href="catalogos.php">Catalogo</a></li>
+                        <li><a class="nav-link scrollto" href="register.php">Crear Cuenta</a></li>
+                        <li><a class="nav-link scrollto" href="signin.php">Iniciar Sesión</a></li>
+                        
+                      </ul>
+                      <i class="bi bi-list mobile-nav-toggle"></i>
+                    </nav><!-- .navbar -->
+              
+                  </div>
+                </header>
+                ');
+            } else {
+                header('location: login.php');
+            }
+        }
+
+        if ($filename != 'index.php' && $filename != 'carrito.php') {
+            print('
+            <section id="breadcrumbs" class="breadcrumbs">
+                <div class="container">
+        
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 id="subtitulo">'.$page.'</h2>
+                    <ol>
+                    <li><a href="index.php">Inicio</a></li>
+                    <li>'.$page.'</li>
+                    </ol>
+                </div>
+        
+                </div>
+          </section>');
+        }
     }
 
-    /*
-    *   Método para imprimir las cajas de dialogo (modals).
-    */
-    private static function modals()
+    public static function footerTemplate2($controller)
     {
-        // Se imprime el código HTML de las cajas de dialogo (modals).
+        $filename = basename($_SERVER['PHP_SELF']);
+        if ($filename != 'carrito.php') {
+            print('<!-- ======= Footer ======= -->
+            <footer id="footer">
+    
+                <div class="container footer-bottom clearfix">
+                <div class="copyright">
+                    &copy; Copyright <strong><span>Remember</span></strong>. All Rights Reserved
+                </div>
+                <div class="credits">
+                    Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                </div>
+                </div>
+            </footer>');
+        } 
+        // Se imprime el código HTML para el pie del documento.
         print('
-          
-            <!-- Componente Modal para mostrar el formulario de editar perfil -->
-            <div id="profile-modal" class="modal">
-                <div class="modal-content">
-                    <h4 class="center-align">Editar perfil</h4>
-                    <form method="post" id="profile-form">
-                        <div class="row">
-                            <div class="input-field col l6 s12 m6">
-                                <i class="material-icons prefix">mail</i>
-                                <input id="correo_electronico" type="email" name="correo_electronico" class="validate" required/>
-                                <label for="correo_electronico">Correo</label>
-                            </div>
-                            <div class="input-field col l6 s12 m6">
-                                 <i class="material-icons prefix">person</i>
-                                <input id="nombres" type="text" name="nombres" class="validate" required/>
-                                <label for="nombres">Nombres</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                        <div class="input-field col l6 s12 m6">
-                            <i class="material-icons prefix">person</i>
-                            <input id="apellidos" type="text" name="apellidos" class="validate" required/>
-                            <label for="apellidos">Apellidos</label>
-                        </div>
-                        <div class="input-field col l6 s12 m6">
-                            <i class="material-icons prefix">fingerprint</i>
-                            <input id="dui" type="text" name="dui" class="validate" required/>
-                            <label for="dui">DUI</label>
-                        </div>
-                    </div>
-                        <div class="row center-align">
-                            <a href="#" class="btn waves-effect red tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
-                            <button type="submit" class="btn waves-effect blue tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                <!-- Vendor JS Files -->
+                <script src="../../framework/purecounter/purecounter_vanilla.js"></script>
+                <script src="../../framework/aos/aos.js"></script>
+                <script src="../../framework/bootstrap/js/bootstrap.bundle.min.js"></script>
+                <script src="../../framework/glightbox/js/glightbox.min.js"></script>
+                <script src="../../framework/isotope-layout/isotope.pkgd.min.js"></script>
+                <script src="../../framework/swiper/swiper-bundle.min.js"></script>
 
-            <!-- Componente Modal para mostrar el formulario de cambiar contraseña -->
-            <div id="password-modal" class="modal">
-                <div class="modal-content">
-                    <h4 class="center-align">Cambiar contraseña</h4>
-                    <form method="post" id="password-form">
-                        <div class="row">
-                            <div class="input-field col s12 m6 offset-m3">
-                                <i class="material-icons prefix">security</i>
-                                <input id="clave_actual" type="password" name="clave_actual" class="validate" required/>
-                                <label for="clave_actual">Clave actual</label>
-                            </div>
-                        </div>
-                        <div class="row center-align">
-                            <label>CLAVE NUEVA</label>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12 m6">
-                                <i class="material-icons prefix">security</i>
-                                <input id="clave_nueva_1" type="password" name="clave_nueva_1" class="validate" required/>
-                                <label for="clave_nueva_1">Clave</label>
-                            </div>
-                            <div class="input-field col s12 m6">
-                                <i class="material-icons prefix">security</i>
-                                <input id="clave_nueva_2" type="password" name="clave_nueva_2" class="validate" required/>
-                                <label for="clave_nueva_2">Confirmar clave</label>
-                            </div>
-                        </div>
-                        <div class="row center-align">
-                            <a href="#" class="btn waves-effect red tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
-                            <button type="submit" class="btn waves-effect blue tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                <script type="text/javascript" src="../../resources/js/main.js"></script>
+                <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
+                <script type="text/javascript" src="../../app/helpers/components.js"></script>
+                <!--<script type="text/javascript" src="../../app/controllers/public/logout.js"></script> -->
+                <script type="text/javascript" src="../../app/controllers/public/' . $controller . '"></script>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        </body>
 
-
-            <div id="device-modal" class="modal ">
-
-            <form method="post" id="history-form" enctype="multipart/form-data">
-            <input class="hide" type="text" id="txtIdX" name="txtIdX" />
-            </form>
-                <div class="modal-content">
-                    <h4 class="center-align">Mis dispositivos</h4>
-
-                    <div class="row" id="devices">
-
-
-                    
-                    </div>
-
-                    <div class="row center-align">
-                            <a href="#" class="btn waves-effect red tooltipped modal-close" data-tooltip="Salir"><i class="material-icons">cancel</i></a>
-                        </div>
-                    
-                </div>
-            </div>
-
-
-
-            <div id="history-modal" class="modal ">
-                <div class="modal-content">
-
-
-                    <h4 id="modal-title" class="center-align">Historial de sesiones </h4><br>
-
-
-                        <table class=" center-align striped centered responsive-table">
-                            <thead>
-                                <tr id="tableHeader">
-                                <th>Fecha</th>
-                                <th>Hora</th>
-                                
-                                </tr>
-                            </thead>
-                            <tbody id="historial">
-                            </tbody>
-                            </table>
-
-
-                    
-                    <br>
-                    <div class="row center-align">
-                            <a href="#" class="btn waves-effect red tooltipped modal-close" data-tooltip="Salir"><i class="material-icons">cancel</i></a>
-                        </div>
-                    </div>
-                    </form>
-                </div>
-        </div>
+        </html>
         ');
     }
+    
 }
 ?>

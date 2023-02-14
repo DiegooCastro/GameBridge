@@ -2,50 +2,37 @@
 // Se incluye la clase con las plantillas del documento.
 require_once('../../app/helpers/public_page.php');
 // Se imprime la plantilla del encabezado enviando el título de la página web.
-Public_Page::headerTemplate('Iniciar sesión', 'public');
+Public_Page::headerTemplate('Iniciar sesión');
 ?>
 
-<head>
-    <link type="text/css" rel="stylesheet" href="../../resources/css/public_login.css" />
-</head>
-
-<body>
-    <div class="row login">
-        <div class="col s12 m12 l4 push-l3 offset-l1">
-            <div class="card ">
-                <div class="card-action white-text center-align">
-                    <h4>Inicio de sesión </h4>
-                    <img src="../../resources/img/brand/Logo.png" width="170" height="120">
-                </div>
-                <div class="card-content">
-                    <form method="post" id="session-form">
-                        <div class="form-field">
-                            <label for="email">Correo electrónico
-                            </label>
-                            <input id="email" type="text" name="email" class="validate" autocomplete="off" required>
-                        </div><br>
-                        <div class="form-field">
-                            <label for="clave">Contraseña</label>
-                            <input id="clave" type="password" name="clave" class="validate" autocomplete="off" required>
-                        </div><br>
-                        <div class="form-field center-align">
-                            <a><button type="submit" class="button"><span>Ingresar</span>
-                                </button>
-                            </a>
-                        </div>
-                        <div class="form-field center-align">
-                                <a href="codigo.php" class="">¿Has olvidado tu contraseña?</a>
-                        </div>
-
-                    </form>
-                </div>
+<!-- Contenedor para mostrar el formulario de inicio de sesión -->
+<div class="container">
+    <!-- Título del contenido principal -->
+    <h4 class="center-align indigo-text">Iniciar sesión</h4>
+    <!-- Formulario para iniciar sesión -->
+    <form method="post" id="session-form">
+        <div class="row">
+            <div class="input-field col s12 m4 offset-m4">
+                <i class="material-icons prefix">email</i>
+                <input type="email" id="usuario" name="usuario" class="validate" required/>
+                <label for="usuario">Correo electrónico</label>
+            </div>
+            <div class="input-field col s12 m4 offset-m4">
+                <i class="material-icons prefix">security</i>
+                <input type="password" id="clave" name="clave" class="validate" required/>
+                <label for="clave">Clave</label>
             </div>
         </div>
+        <div class="row center-align">
+            <button type="submit" class="btn waves-effect blue tooltipped" data-tooltip="Ingresar"><i class="material-icons">send</i></button>
+        </div>
+    </form>
+    <div class="row center-align">
+        <a href="signin.php" class="btn waves-effect indigo tooltipped" data-tooltip="Registrarse"><i class="material-icons">person</i></a>
     </div>
-    </div>
-</body>
-
+</div>
 
 <?php
+// Se imprime la plantilla del pie enviando el nombre del controlador para la página web.
 Public_Page::footerTemplate('login.js');
 ?>

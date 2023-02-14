@@ -29,6 +29,34 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            // Caso para cargar todos los datos de la tabla
+            case 'readCategoria':
+                // Ejecutamos la funcion del modelo 
+                if ($result['dataset'] = $producto->readCategoria()) {
+                    $result['status'] = 1;
+                } else {
+                    // Se ejecuta si existe algun error en la base de datos 
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'No hay productos registrados';
+                    }
+                }
+                break;
+            // Caso para cargar todos los datos de la tabla
+            case 'readMarca':
+                // Ejecutamos la funcion del modelo 
+                if ($result['dataset'] = $producto->readMarca()) {
+                    $result['status'] = 1;
+                } else {
+                    // Se ejecuta si existe algun error en la base de datos 
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'No hay productos registrados';
+                    }
+                }
+                break;
             // Caso para realizar la busqueda filtrada
             case 'search':
                 // Obtenemos el post para tener acceso a los inputs del formulario
@@ -64,43 +92,35 @@ if (isset($_GET['action'])) {
                         if ($producto->setPrecio($_POST['txtPrecio'])) {
                             if ($producto->setDescripcion($_POST['txtDescripcion'])) {
                                 if (isset($_POST['cmbCategoria'])) {
-                                    if ($producto->setCategoria($_POST['cmbCategoria'])) {
-                                        if (isset($_POST['cmbEstado'])) {
-                                            if ($producto->setEstado($_POST['cmbEstado'])) {
-                                                if (isset($_POST['cmbMarca'])) {
-                                                    if ($producto->setMarca($_POST['cmbMarca'])) {
-                                                        if (is_uploaded_file($_FILES['archivo_producto']['tmp_name'])) {
-                                                            if ($producto->setImagen($_FILES['archivo_producto'])) {
-                                                                // Ejecutamos la funcion para ingresar los datos 
-                                                                if ($producto->createRow()) {
-                                                                    $result['status'] = 1;
-                                                                    // Guardamos la imagen dentro de la carpeta del proyecto
-                                                                    if ($producto->saveFile($_FILES['archivo_producto'], $producto->getRuta(), $producto->getImagen())) {
-                                                                        $result['message'] = 'Producto creado correctamente';
-                                                                    } else {
-                                                                        $result['message'] = 'Producto creado pero no se guardó la imagen';
-                                                                    }
-                                                                } else {
-                                                                    $result['exception'] = Database::getException();;
-                                                                }
+                                    if ($producto->setCategoria($_POST['cmbCategoria'])) { 
+                                        if (isset($_POST['cmbMarca'])) {
+                                            if ($producto->setMarca($_POST['cmbMarca'])) {
+                                                if (is_uploaded_file($_FILES['archivo_producto']['tmp_name'])) {
+                                                    if ($producto->setImagen($_FILES['archivo_producto'])) {
+                                                        // Ejecutamos la funcion para ingresar los datos 
+                                                        if ($producto->createRow()) {
+                                                            $result['status'] = 1;
+                                                            // Guardamos la imagen dentro de la carpeta del proyecto
+                                                            if ($producto->saveFile($_FILES['archivo_producto'], $producto->getRuta(), $producto->getImagen())) {
+                                                                $result['message'] = 'Producto creado correctamente';
                                                             } else {
-                                                                $result['exception'] = $producto->getImageError();
+                                                                $result['message'] = 'Producto creado pero no se guardó la imagen';
                                                             }
                                                         } else {
-                                                            $result['exception'] = 'Seleccione una imagen';
+                                                            $result['exception'] = Database::getException();;
                                                         }
                                                     } else {
-                                                        $result['exception'] = 'Categoría incorrecta';
+                                                        $result['exception'] = $producto->getImageError();
                                                     }
                                                 } else {
-                                                    $result['exception'] = 'Seleccione una categoría';
+                                                    $result['exception'] = 'Seleccione una imagen';
                                                 }
                                             } else {
-                                                $result['exception'] = 'Categoría incorrecta';
+                                                $result['exception'] = 'Marca incorrecta';
                                             }
                                         } else {
-                                            $result['exception'] = 'Seleccione una categoría';
-                                        }
+                                            $result['exception'] = 'Seleccione una marca';
+                                        }     
                                     } else {
                                         $result['exception'] = 'Categoría incorrecta';
                                     }
@@ -114,12 +134,12 @@ if (isset($_GET['action'])) {
                             $result['exception'] = 'Precio incorrecto';
                         }
                     } else {
-                        $result['exception'] = 'Nombre incorrecto';
+                        $result['exception'] = 'Nombre producto incorrecto';
                     }     
                 break;
             // Caso para leer en contenido de un solo registro
             case 'readOne':
-                if ($producto->setId($_POST['id'])) {
+                if ($producto->setId($_POST['txtId'])) {
                     // Ejecutamos la funcion del modelo 
                     if ($result['dataset'] = $producto->readOne()) {
                         $result['status'] = 1;
@@ -138,55 +158,47 @@ if (isset($_GET['action'])) {
             case 'update':
                 // Obtenemos el form con los inputs para obtener los datos
                 $_POST = $producto->validateForm($_POST);
-                if ($producto->setId($_POST['txtId'])) {
+                if ($producto->setId($_POST['auxId'])) {
                     if ($data = $producto->readOne()) {
                         if ($producto->setProducto($_POST['txtProducto'])) {
                             if ($producto->setPrecio($_POST['txtPrecio'])) {
                                 if ($producto->setDescripcion($_POST['txtDescripcion'])) {
                                     if (isset($_POST['cmbCategoria'])) {
                                         if ($producto->setCategoria($_POST['cmbCategoria'])) {
-                                            if (isset($_POST['cmbEstado'])) {
-                                                if ($producto->setEstado($_POST['cmbEstado'])) {
-                                                    if (isset($_POST['cmbMarca'])) {
-                                                        if ($producto->setMarca($_POST['cmbMarca'])) {
-                                                            if (is_uploaded_file($_FILES['archivo_producto']['tmp_name'])) {
-                                                                if ($producto->setImagen($_FILES['archivo_producto'])) {
-                                                                    // Ejecutamos la funcion del modelo 
-                                                                    if ($producto->updateRow($data['imagen'])) {
-                                                                        $result['status'] = 1;
-                                                                        // Guardamos la imagen dentro de la carpeta de la base de datos
-                                                                        if ($producto->saveFile($_FILES['archivo_producto'], $producto->getRuta(), $producto->getImagen())) {
-                                                                            $result['message'] = 'Producto modificado correctamente';
-                                                                        } else {
-                                                                            $result['message'] = 'Producto modificado pero no se guardó la imagen';
-                                                                        }
-                                                                    } else {
-                                                                        $result['exception'] = Database::getException();
-                                                                    }
-                                                                } else {
-                                                                    $result['exception'] = $producto->getImageError();
-                                                                }
-                                                            } else {
-                                                                // Ejecutamos la funcion guardando la imagen 
-                                                                if ($producto->updateRow($data['imagen'])) {
-                                                                    $result['status'] = 1;
+                                            if (isset($_POST['cmbMarca'])) {
+                                                if ($producto->setMarca($_POST['cmbMarca'])) {
+                                                    if (is_uploaded_file($_FILES['archivo_producto']['tmp_name'])) {
+                                                        if ($producto->setImagen($_FILES['archivo_producto'])) {
+                                                            // Ejecutamos la funcion del modelo 
+                                                            if ($producto->updateRow($data['imagen'])) {
+                                                                $result['status'] = 1;
+                                                                // Guardamos la imagen dentro de la carpeta de la base de datos
+                                                                if ($producto->saveFile($_FILES['archivo_producto'], $producto->getRuta(), $producto->getImagen())) {
                                                                     $result['message'] = 'Producto modificado correctamente';
                                                                 } else {
-                                                                    $result['exception'] = Database::getException();
+                                                                    $result['message'] = 'Producto modificado pero no se guardó la imagen';
                                                                 }
+                                                            } else {
+                                                                $result['exception'] = Database::getException();
                                                             }
                                                         } else {
-                                                            $result['exception'] = 'Categoría incorrecta';
+                                                            $result['exception'] = $producto->getImageError();
                                                         }
                                                     } else {
-                                                        $result['exception'] = 'Seleccione una categoría';
+                                                        // Ejecutamos la funcion guardando la imagen 
+                                                        if ($producto->updateRow($data['imagen'])) {
+                                                            $result['status'] = 1;
+                                                            $result['message'] = 'Producto modificado correctamente';
+                                                        } else {
+                                                            $result['exception'] = Database::getException();
+                                                        }
                                                     }
                                                 } else {
                                                     $result['exception'] = 'Categoría incorrecta';
                                                 }
                                             } else {
                                                 $result['exception'] = 'Seleccione una categoría';
-                                            }
+                                            }       
                                         } else {
                                             $result['exception'] = 'Categoría incorrecta';
                                         }
@@ -206,117 +218,32 @@ if (isset($_GET['action'])) {
                         $result['exception'] = 'Producto inexistente';
                     }
                 } else {
-                    $result['exception'] = 'Producto incorrecto';
+                    $result['exception'] = 'Producto no existe';
                 }
                 break;
             // Caso para eliminar un registro de la base de datos
             case 'delete':
                 // Obtenemos el valor del id
                 if ($producto->setId($_POST['txtId'])) {
-                    if ($data = $producto->readOne()) {
-                        // Ejecutamos la funcion del modelo
-                        if ($producto->deleteRow()) {
-                            $result['status'] = 1;
-                            // Ejecutamos la funcion para eliminar la imagen de la carpeta del proyecto
-                            if ($producto->deleteFile($producto->getRuta(), $data['imagen'])) {
-                                $result['message'] = 'Producto eliminado correctamente';
+                    if ($producto->setAccion($_POST['txtAccion'])) {
+                        if ($data = $producto->readOne()) {
+                            // Ejecutamos la funcion del modelo
+                            if ($producto->deleteRow()) {
+                                $result['status'] = 1;
+                                $result['message'] = 'Estado modificado correctamente';
                             } else {
-                                $result['message'] = 'Producto eliminado pero no se borró la imagen';
+                                $result['exception'] = Database::getException();
                             }
                         } else {
-                            $result['exception'] = Database::getException();
+                            $result['exception'] = 'Producto inexistente';
                         }
                     } else {
-                        $result['exception'] = 'Producto inexistente';
+                        $result['exception'] = 'Producto incorrecto';
                     }
                 } else {
                     $result['exception'] = 'Producto incorrecto';
                 }
                 break;
-                // Caso para consulta de grafica cantidad de productos vendidos por categoria
-                case 'categoriasVentas':
-                    // Ejecutamos la funcion para cargar los datos de la base
-                    if ($result['dataset'] = $producto->categoriasVentas()) {
-                        $result['status'] = 1;
-                    } else {
-                        // Se ejecuta si existe algun error en la base de datos 
-                        if (Database::getException()) {
-                            $result['exception'] = Database::getException();
-                        } else {
-                            $result['exception'] = 'No hay datos disponibles';
-                        }
-                    }
-                    break;
-                    // Caso para consulta de grafica de los productos mas vendidos en la tienda
-                    case 'ventasProductos':
-                        // Ejecutamos la funcion para cargar los datos de la base
-                        if ($result['dataset'] = $producto->ventasProductos()) {
-                            $result['status'] = 1;
-                        } else {
-                            // Se ejecuta si existe algun error en la base de datos 
-                            if (Database::getException()) {
-                                $result['exception'] = Database::getException();
-                            } else {
-                                $result['exception'] = 'No hay datos disponibles';
-                            }
-                        }
-                        break;
-                    // Caso para consulta de grafica de los clientes con mas compras dentro de la tienda
-                    case 'ventasClientes':
-                        // Ejecutamos la funcion para cargar los datos de la base
-                        if ($result['dataset'] = $producto->ventasClientes()) {
-                            $result['status'] = 1;
-                        } else {
-                            // Se ejecuta si existe algun error en la base de datos 
-                            if (Database::getException()) {
-                                $result['exception'] = Database::getException();
-                            } else {
-                                $result['exception'] = 'No hay datos disponibles';
-                            }
-                        }
-                        break;
-                    // Caso para consulta de grafica marcas con mas productos vendidos
-                    case 'ventasMarcas':
-                        // Ejecutamos la funcion para cargar los datos de la base
-                        if ($result['dataset'] = $producto->ventasMarcas()) {
-                            $result['status'] = 1;
-                        } else {
-                            // Se ejecuta si existe algun error en la base de datos 
-                            if (Database::getException()) {
-                                $result['exception'] = Database::getException();
-                            } else {
-                                $result['exception'] = 'No hay datos disponibles';
-                            }
-                        }
-                        break;
-                    // Caso para consulta de grafica cantidad de productos vendidos en los ultimos 30 dias
-                    case 'ventasFechas':
-                        // Ejecutamos la funcion para cargar los datos de la base
-                        if ($result['dataset'] = $producto->ventasFechas()) {
-                            $result['status'] = 1;
-                        } else {
-                            // Se ejecuta si existe algun error en la base de datos 
-                            if (Database::getException()) {
-                                $result['exception'] = Database::getException();
-                            } else {
-                                $result['exception'] = 'No hay datos disponibles';
-                            }
-                        }
-                        break;
-                    // Caso para consulta de grafica cantidad de productos vendidos por categoria
-                    case 'ventasCategorias':
-                        // Ejecutamos la funcion para cargar los datos de la base
-                        if ($result['dataset'] = $producto->ventasCategorias()) {
-                            $result['status'] = 1;
-                        } else {
-                            // Se ejecuta si existe algun error en la base de datos 
-                            if (Database::getException()) {
-                                $result['exception'] = Database::getException();
-                            } else {
-                                $result['exception'] = 'No hay datos disponibles';
-                            }
-                        }
-                        break;
             default:
                 $result['exception'] = 'Acción no disponible dentro de la sesión';
         }

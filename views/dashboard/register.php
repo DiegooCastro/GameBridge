@@ -13,23 +13,33 @@ Dashboard_Page::headerTemplate('Registrar primer usuario');
     <form method="post" id="register-form">
         <div class="row">
             <div class="input-field col s12 m6">
+                <i class="material-icons prefix ">person_pin</i>
+                <input id="txtAlias" type="text" name="txtAlias" autocomplete="off" class="validate" required />
+                <label for="alias">Nombre de usuario</label>
+            </div>
+            <div class="input-field col s12 m6">
                 <i class="material-icons prefix">email</i>
-                <input id="correo" type="email" name="correo" autocomplete="off" class="validate" required />
+                <input id="txtCorreo" type="email" name="txtCorreo" autocomplete="off" class="validate" required />
                 <label for="correo">Correo</label>
             </div>
             <div class="input-field col s12 m6">
                 <i class="material-icons prefix ">person_pin</i>
-                <input id="alias" type="text" name="alias" autocomplete="off" class="validate" required />
-                <label for="alias">Nombre de usuario</label>
+                <input id="txtDui" type="text" name="txtDui" autocomplete="off" class="validate" required />
+                <label for="alias">Dui</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <i class="material-icons prefix ">person_pin</i>
+                <input id="txtTelefono" type="text" name="txtTelefono" autocomplete="off" class="validate" required />
+                <label for="alias">Telefono</label>
             </div>
             <div class="input-field col s12 m6">
                 <i class="material-icons prefix">security</i>
-                <input id="clave1" type="password" name="clave1" autocomplete="off" class="validate" required />
+                <input id="txtClave1" type="password" name="txtClave1" autocomplete="off" class="validate" required />
                 <label for="clave1">Clave</label>
             </div>
             <div class="input-field col s12 m6">
                 <i class="material-icons prefix">security</i>
-                <input id="clave2" type="password" name="clave2" autocomplete="off" class="validate" required />
+                <input id="txtClave2" type="password" name="txtClave2" autocomplete="off" class="validate" required />
                 <label for="clave2">Confirmar clave</label>
             </div>
         </div>

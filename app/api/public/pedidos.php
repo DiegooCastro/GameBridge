@@ -12,36 +12,20 @@ if (isset($_GET['action'])) {
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'session' => 0, 'message' => null, 'exception' => null);
     // Se verifica si existe una sesión iniciada como cliente para realizar las acciones correspondientes.
-    if (isset($_SESSION['idcliente'])) {
+    if (isset($_SESSION['id_cliente'])) {
         $result['session'] = 1;
         // Se compara la acción a realizar cuando un cliente ha iniciado sesión.
         switch ($_GET['action']) {
-            case 'createDetail': //metodo que crea el detalle de factura y la factura si no existe
+            case 'createDetail':
                 if ($pedido->startOrder()) {
                     $_POST = $pedido->validateForm($_POST);
-                    if ($pedido->setProducto($_POST['txtId'])) {
+                    if ($pedido->setProducto($_POST['id_producto'])) {
                         if ($pedido->setCantidad($_POST['cantidad_producto'])) {
-                            if ($pedido->setPrecio($_POST['precio'])) {
-                                if ($pedido->createDetail()) {
-                                    if ($dataMaterial = $pedido->readOne()) {
-                                        if ($pedido->setCantidadStock($dataMaterial['cantidad'])) {
-                                            if ($pedido->restarStock()) {
-                                                $result['status'] = 1;
-                                                $result['message'] = 'Agregado al carrito correctamente.';
-                                            } else {
-                                                $result['exception'] = Database::getException();
-                                            }
-                                        } else {
-                                            $result['exception'] = 'Cantidad stock incorrecta.';
-                                        }
-                                    } else {
-                                        $result['exception'] = Database::getException();
-                                    }
-                                } else {
-                                    $result['exception'] = 'Ocurrió un problema al agregar el producto';
-                                }
+                            if ($pedido->createDetail()) {
+                                $result['status'] = 1;
+                                $result['message'] = 'Producto agregado correctamente';
                             } else {
-                                $result['exception'] = 'Precio incorrecto';
+                                $result['exception'] = 'Ocurrió un problema al agregar el producto';
                             }
                         } else {
                             $result['exception'] = 'Cantidad incorrecta';
@@ -53,158 +37,57 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ocurrió un problema al obtener el pedido';
                 }
                 break;
-            case 'create': // metodo para crear un direccion
-                $_POST = $pedido->validateForm($_POST);
-                if ($pedido->setTelefonoFijo($_POST['telefono'])) {
-                    if ($pedido->setCodigoPostal($_POST['codigopostal'])) {
-                        if ($pedido->setDireccion($_POST['direccion'])) {
-                            if ($pedido->crearDireccion()) {
-                                $result['status'] = 1;
-                                $result['message'] = 'Direccion agregada correctamente';
-                            } else {
-                                $result['exception'] = Database::getException();;
-                            }
-                        } else {
-                            $result['exception'] = 'Direccion incorrecta';
-                        }
-                    } else {
-                        $result['exception'] = 'Codigo incorrecto';
-                    }
-                } else {
-                    $result['exception'] = 'Telefono incorrecto';
-                }
-                break;
-            case 'readAllParam': // METODO READ CON PARAMETRO PARA MODAL
-                $_POST = $pedido->validateForm($_POST);
-                if ($result['dataset'] = $pedido->cargarDatosParam($_SESSION['idcliente'])) {
-                    $result['status'] = 1;
-                } else {
-                    if (Database::getException()) {
-                        $result['exception'] = Database::getException();
-                    } else {
-                        $result['exception'] = 'No existen registros';
-                    }
-                }
-                break;
-            case 'delete': //metodo usado para eliminar una direccion
-                $_POST = $pedido->validateForm($_POST);
-                if ($pedido->setId($_POST['txtIdx'])) {
-                    if ($pedido->deleteRow()) {
+            case 'readOrderDetail':
+                if ($pedido->startOrder()) {
+                    if ($result['dataset'] = $pedido->readOrderDetail()) {
                         $result['status'] = 1;
-                        $result['message'] = 'Direccion eliminada correctamente';
+                        $_SESSION['id_pedido'] = $pedido->getIdPedido();
                     } else {
-                        $result['exception'] = Database::getException();
-                    }
-                } else {
-                    $result['exception'] = 'Cliente incorrecto';
-                }
-                break;
-            case 'readOrderDetail': //metodo para cargar el carrito de compras del cliente
-                if ($pedido->setCliente($_SESSION['idcliente'])) {
-                    if ($pedido->startOrder()) {
-                        if ($result['dataset'] = $pedido->readOrderDetail()) {
-                            $result['status'] = 1;
-                            $_SESSION['idfactura'] = $pedido->getIdPedido();
-                        } else {
-                            if (Database::getException()) {
-                                $result['exception'] = Database::getException();
-                            } else {
-                                $result['exception'] = 'No tiene productos en el carrito';
-                            }
-                        }
-                    } else {
-                        $result['exception'] = 'Debe agregar un producto al carrito';
-                    }
-                } else {
-                    $result['exception'] = 'Cliente incorrecto';
-                }
-                break;
-            case 'readOneMaterial':  //metodo para obtener datos del producto
-                $_POST = $pedido->validateForm($_POST);
-                if ($pedido->setProducto($_POST['idproducto'])) {
-                    if ($result['dataset'] = $pedido->readOne()) {
-                        $result['status'] = 1;
-                    } else {
-                        $result['exception'] = Database::getException();
-                    }
-                } else {
-                    $result['exception'] = 'id incorrecto';
-                }
-                break;
-            case 'updateStock': //metodo para actualizar las cantidades del stock
-                if ($pedido->setProducto($_POST['idproducto'])) {
-                    if ($pedido->setIdDetalle($_POST['id_detalle'])) {
-                        if ($pedido->updateStock($_POST['stockBodega'])) {
-                            if ($pedido->updateOrderStock($_POST['stockPedido'])) {
-                                $result['status'] = 1;
-                                $result['message'] = 'Cantidad actualizada correctamente.';
-                            } else {
-                                $result['exception'] = Database::getException();
-                            }
-                        } else {
+                        if (Database::getException()) {
                             $result['exception'] = Database::getException();
-                        }
-                    } else {
-                        $result['exception'] = 'Id material incorrecto';
-                    }
-                } else {
-                    $result['exception'] = 'Id material incorrecto';
-                }
-                break;
-            case 'deleteDetail': //metodo para eliminar un producto de un carrito
-                if ($pedido->setIdPedido($_SESSION['idfactura'])) {
-                    if ($pedido->setIdDetalle($_POST['id_detalle'])) {
-                        if ($pedido->setCantidad($_POST['cantidad_producto'])) {
-                            if ($pedido->setProducto($_POST['idproducto'])) {
-                                if ($data = $pedido->readOne()) {
-                                    if ($pedido->setCantidadStock($data['cantidad'])) {
-                                        if ($pedido->restoreStock()) {
-                                            if ($pedido->deleteDetail()) {
-                                                $result['status'] = 1;
-                                                $result['message'] = 'Producto eliminado del carrito con exito.';
-                                            } else {
-                                                $result['exception'] = Database::getException();
-                                            }
-                                        } else {
-                                            $result['exception'] = 'No se han podido restaurar las cantidades antes de eliminar el registro.';
-                                        }
-                                    } else {
-                                        $result['exception'] = 'Cantidad incorrecta';
-                                    }
-                                } else {
-                                    $result['exception'] = 'No se cargaron los datos';
-                                }
-                            } else {
-                                $result['exception'] = 'Producto incorrecto';
-                            }
                         } else {
-                            $result['exception'] = 'Cantidad incorrecta';
+                            $result['exception'] = 'No tiene productos en el carrito';
                         }
-                    } else {
-                        $result['exception'] = 'Detalle incorrecto';
                     }
                 } else {
-                    $result['exception'] = 'Pedido incorrecto';
+                    $result['exception'] = 'Debe agregar un producto al carrito';
                 }
                 break;
-            case 'finishOrder': //metodo para finalizar un pedido
+            case 'updateDetail':
+                $_POST = $pedido->validateForm($_POST);
+                if ($pedido->setIdDetalle($_POST['id_detalle'])) {
+                    if ($pedido->setCantidad($_POST['cantidad_producto'])) {
+                        if ($pedido->updateDetail()) {
+                            $result['status'] = 1;
+                            $result['message'] = 'Cantidad modificada correctamente';
+                        } else {
+                            $result['exception'] = 'Ocurrió un problema al modificar la cantidad';
+                        }
+                    } else {
+                        $result['exception'] = 'Cantidad incorrecta';
+                    }
+                } else {
+                    $result['exception'] = 'Detalle incorrecto';
+                }
+                break;
+            case 'deleteDetail':
+                if ($pedido->setIdDetalle($_POST['id_detalle'])) {
+                    if ($pedido->deleteDetail()) {
+                        $result['status'] = 1;
+                        $result['message'] = 'Producto removido correctamente';
+                    } else {
+                        $result['exception'] = 'Ocurrió un problema al remover el producto';
+                    }
+                } else {
+                    $result['exception'] = 'Detalle incorrecto';
+                }
+                break;
+            case 'finishOrder':
                 if ($pedido->finishOrder()) {
                     $result['status'] = 1;
                     $result['message'] = 'Pedido finalizado correctamente';
                 } else {
                     $result['exception'] = 'Ocurrió un problema al finalizar el pedido';
-                }
-                break;
-            case 'readAll': //metodo para cargar las direcciones de un cliente
-                $_POST = $pedido->validateForm($_POST);
-                if ($result['dataset'] = $pedido->cargarDatosParam($_SESSION['idcliente'])) {
-                    $result['status'] = 1;
-                } else {
-                    if (Database::getException()) {
-                        $result['exception'] = Database::getException();
-                    } else {
-                        $result['exception'] = 'No existen registros';
-                    }
                 }
                 break;
             default:

@@ -110,8 +110,7 @@ function saveRow(api, action, form, modal) {
                 // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
                 if (response.status) {
                     // Se cierra la caja de dialogo (modal) del formulario.
-                    let instance = M.Modal.getInstance(document.getElementById(modal));
-                    instance.close();
+                    $(`#${modal}`).modal('hide');
                     // Se cargan nuevamente las filas en la tabla de la vista después de agregar o modificar un registro.
                     readRows(api);
                     sweetAlert(1, response.message, null);
@@ -130,7 +129,7 @@ function saveRow(api, action, form, modal) {
 function confirmDelete(api, data) {
     swal({
         title: 'Advertencia',
-        text: '¿Desea eliminar el registro?',
+        text: '¿Desea cambiar el estado?',
         icon: 'warning',
         buttons: ['No', 'Sí'],
         closeOnClickOutside: false,
@@ -275,8 +274,6 @@ function fillSelect(endpoint, select, selected) {
                 }
                 // Se agregan las opciones a la etiqueta select mediante su id.
                 document.getElementById(select).innerHTML = content;
-                // Se inicializa el componente Select del formulario para que muestre las opciones.
-                M.FormSelect.init(document.querySelectorAll('select'));
             });
         } else {
             console.log(request.status + ' ' + request.statusText);

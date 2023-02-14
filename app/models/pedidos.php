@@ -5,7 +5,6 @@
 class Pedidos extends Validator
 {
     // Declaracion de atributos para pedidos
-    private $id = null;
     private $id_pedido = null;
     private $id_detalle = null;
     private $cliente = null;
@@ -26,18 +25,6 @@ class Pedidos extends Validator
     /*
     *   Métodos para validar y asignar valores de los atributos.
     */
-
-    // Métodos para asignar el valor a los atributos
-    public function setId($value)
-    {
-        // Validamos el tipo de dato del valor ingresado
-        if ($this->validateNaturalNumber($value)) {
-            $this->id = $value;
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     public function setIdPedido($value)
     {
@@ -129,10 +116,6 @@ class Pedidos extends Validator
     }
 
     // Funciones para retornar el valor los atributos de la clase
-    public function getId()
-    {
-        return $this->id;
-    }
 
     public function getIdPedido()
     {
@@ -142,21 +125,20 @@ class Pedidos extends Validator
     // Método para verificar si existe un pedido en proceso para seguir comprando, de lo contrario se crea uno.
     public function startOrder()
     {
-        $this->estado = 1;
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'SELECT idfactura FROM facturas WHERE estado = ? AND cliente = ?';
-        // Cargamos los parametros en un arreglo 
-        $params = array($this->estado, $_SESSION['idcliente']);
-        // Verificamos si existe una factura activa del cliente que inicio sesion
+        $this->estado = 0;
+
+        $sql = 'SELECT idfactura
+                FROM facturas
+                WHERE estado = ? AND cliente = ?';
+        $params = array($this->estado, $_SESSION['id_cliente']);
         if ($data = Database::getRow($sql, $params)) {
             $this->id_pedido = $data['idfactura'];
             return true;
         } else {
-            // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-            $sql = 'INSERT INTO facturas(estado,cliente,vendedor,entrega) VALUES(?, ?,12,?)';
-            // Cargamos los parametros en un arreglo
-            $params = array($this->estado, $_SESSION['idcliente'],null);
-            // Se obtiene el ultimo valor insertado en la llave primaria de la tabla pedidos.
+            $sql = 'INSERT INTO facturas(idfactura,estado, cliente)
+                    VALUES(default,?, ?)';
+            $params = array($this->estado, $_SESSION['id_cliente']);
+            // Se obtiene el ultimo valor insertado en la llave primaria de la tabla facturas.
             if ($this->id_pedido = Database::getLastRow($sql, $params)) {
                 return true;
             } else {
@@ -165,33 +147,13 @@ class Pedidos extends Validator
         }
     }
 
-    // Método para cargar las direcciones de un cliente
-    public function cargarDatosParam($idCliente)
-    {
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'SELECT iddireccion,direccion,codigo_postal,telefono_fijo 
-        from direcciones 
-        where cliente = ?';
-        $params = array($idCliente);
-        return Database::getRows($sql, $params);
-    }
-
-    // Método para eliminar una direccion
-    public function deleteRow()
-    {
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'DELETE FROM direcciones 
-        where iddireccion = ?';
-        $params = array($this->id);
-        return Database::executeRow($sql, $params);
-    }
-
     // Método para agregar un producto al carrito de compras.
     public function createDetail()
     {
         // Se realiza una subconsulta para obtener el precio del producto.
-        $sql = 'INSERT INTO detallepedidos(producto, preciounitario, cantidad, pedido) VALUES(?, ?, ?, ?)';
-        $params = array($this->producto, $this->precio, $this->cantidad, $this->id_pedido);
+        $sql = 'INSERT INTO detallepedidos(pedido, producto,  preciounitario ,cantidad)
+        VALUES(?, ?,(SELECT precio FROM productos WHERE idproducto = ?), ?)';
+        $params = array($this->id_pedido,$this->producto, $this->producto, $this->cantidad);
         return Database::executeRow($sql, $params);
     }
 
@@ -199,12 +161,12 @@ class Pedidos extends Validator
     public function readOrderDetail()
     {
         // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'SELECT iddetallefactura,pedido,p.producto,idproducto,d.cantidad,
-        preciounitario,p.imagen
-        from detallepedidos d
-        INNER JOIN facturas f ON f.idFactura = d.pedido
-        INNER JOIN productos p ON p.idProducto = d.producto
-        WHERE idfactura = ? order by iddetallefactura';
+        $sql = 'SELECT iddetallefactura, p.producto, 
+        d.preciounitario, d.cantidad,p.imagen
+        FROM facturas f
+        INNER JOIN detallepedidos d ON d.pedido = f.idfactura 
+        INNER JOIN productos p ON p.idproducto = d.producto
+        WHERE idfactura = ?';
         // Cargamos los parametros en un arreglo
         $params = array($this->id_pedido);
         return Database::getRows($sql,$params);
@@ -218,7 +180,7 @@ class Pedidos extends Validator
         $sql = 'UPDATE facturas
                 SET estado = ?
                 WHERE idfactura = ?';
-        $params = array($this->estado, $_SESSION['idfactura']);
+        $params = array($this->estado, $_SESSION['id_pedido']);
         return Database::executeRow($sql, $params);
     }
 
@@ -228,7 +190,7 @@ class Pedidos extends Validator
         $sql = 'UPDATE detallepedidos
                 SET cantidad = ?
                 WHERE iddetallefactura = ? AND pedido = ?';
-        $params = array($this->cantidad, $this->id_detalle, $_SESSION['idfactura']);
+        $params = array($this->cantidad, $this->id_detalle, $_SESSION['id_pedido']);
         return Database::executeRow($sql, $params);
     }
 
@@ -237,121 +199,12 @@ class Pedidos extends Validator
     {
         $sql = 'DELETE FROM detallepedidos
                 WHERE iddetallefactura = ? AND pedido = ?';
-        $params = array($this->id_detalle, $_SESSION['idfactura']);
+        $params = array($this->id_detalle, $_SESSION['id_pedido']);
         return Database::executeRow($sql, $params);
     }
-    
-    // Funciones para retornar el valor los atributos de la clase
-    public function getIdDireccion()
-    {
-        return $this->iddireccion;
-    }
+        
 
-    public function getTelefonoFijo()
-    {
-        return $this->telefonofijo;
-    }
-
-    public function getCodigoPostal()
-    {
-        return $this->codigopostal;
-    }
-
-    public function getDireccion()
-    {
-        return $this->direccion;
-    }
-
-    //Métodos para validar y asignar valores de los atributos.
-
-    public function setIdDireccion($value)
-    {
-        // Validamos el tipo de dato del valor ingresado
-        if ($this->validateNaturalNumber($value)) {
-            $this->iddireccion = $value;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function setCodigoPostal($value)
-    {
-        // Validamos el tipo de dato del valor ingresado
-        if ($this->validateAlphanumeric($value, 1, 40)) {
-            $this->codigopostal = $value;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function setTelefonoFijo($value)
-    {
-        // Validamos el tipo de dato del valor ingresado
-        if ($this->validateAlphanumeric($value, 1, 40)) {
-            $this->telefonofijo = $value;
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-
-    public function setDireccion($value)
-    {
-        // Validamos el tipo de dato del valor ingresado
-        if ($this->validateAlphanumeric($value, 1, 100)) {
-            $this->direccion = $value;
-            return true;
-        } else {
-            return false;
-        }
-    }
- 
-    public function setcmbDireccion($value)
-    {
-        // Validamos el tipo de dato del valor ingresado
-        if ($this->validateNaturalNumber($value)) {
-            $this->cmbdireccion = $value;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    // Método para crear direcciones
-    public function crearDireccion()
-    {
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'INSERT INTO direcciones(cliente, direccion, codigo_postal, telefono_fijo) VALUES(?, ?, ?, ?)';
-        $params = array($_SESSION['idcliente'],$this->direccion, $this->codigopostal, $this->telefonofijo);
-        return Database::executeRow($sql, $params);
-    }
-
-    // Metodo para fijar la direccion de envio
-    public function updateDireccion()
-    {
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'UPDATE  facturas set entrega=? where idfactura=?';
-        $params = array($this->cmbdireccion,$_SESSION['idfactura']);
-        return Database::executeRow($sql, $params);
-    }
-
-    //Metodo para cargar los datos de un producto
-    public function readOne()
-    {
-        $sql = 'SELECT idProducto as id,c.categoria,e.estado,m.marca,producto,precio,descripcion, imagen ,cantidad 
-        FROM productos p
-        INNER JOIN categorias c ON c.idCategoria = p.Categoria
-        INNER JOIN estadoProductos e ON e.idEstado = p.estado
-        INNER JOIN marcas m ON m.idMarca = p.marca
-        WHERE idProducto = ? AND p.estado = 1';
-        $params = array($this->producto);
-        return Database::getRow($sql, $params);
-    }
-
-    // Metodo para restar stock
+    // METODOS PARA GESTION DEL 
     public function restarStock()
     {
 
@@ -387,15 +240,6 @@ class Pedidos extends Validator
         $sql = 'UPDATE detallepedidos set cantidad = ? where iddetallefactura = ?  AND pedido = ?';
         $params = array($cantidad, $this->id_detalle,$_SESSION['idfactura']);
         return Database::executeRow($sql,$params);
-    }
-
-    //Metodo para cargar las direcciones
-    public function readAll()
-    {
-        $sql = 'SELECT iddireccion, direccion as direccion,codigo_postal as codigo,telefono_fijo as telefono
-        from direcciones d where cliente = ?';
-        $params = array($_SESSION['idcliente']);
-        return Database::getRows($sql, $params);
     }
     
     

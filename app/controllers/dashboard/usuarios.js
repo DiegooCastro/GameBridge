@@ -1,77 +1,118 @@
 // Constante para establecer la ruta y parámetros de comunicación con la API.
 const API_USUARIOS = '../../app/api/dashboard/usuarios.php?action=';
-const ENDPOINT_CATEGORIAS = '../../app/api/dashboard/tipos_usuario.php?action=readAll';
-const ENDPOINT_ESTADO = '../../app/api/dashboard/estado_usuario.php?action=readAll';
+const API_TIPOUSUARIO = '../../app/api/dashboard/usuarios.php?action=readUserType';
 
 // Método manejador de eventos que se ejecuta cuando el documento ha cargado.
 document.addEventListener('DOMContentLoaded', function () {
-    // Se llama a la función que obtiene los registros para llenar la tabla. Se encuentra en el archivo components.js
     readRows(API_USUARIOS);
 });
 
 // Función para llenar la tabla con los datos de los registros. Se manda a llamar en la función readRows().
 function fillTable(dataset) {
     let content = '';
+    let icon = '';
+    let accion = '';
+    let tipo ='';
     // Se recorre el conjunto de registros (dataset) fila por fila a través del objeto row.
     dataset.map(function (row) {
+        switch(row.tipo)
+        {
+            case 1:
+                tipo = 'Root';
+                break;
+            case 2:
+                tipo = 'Administrador';
+                break;
+            case 3:
+                tipo = 'Vendedor';
+                break;
+        }
+        if(row.estado == true)
+        {
+            icon = 'lock'
+            accion = false;
+        } else {
+            icon  = 'lock_open';
+            accion = true;
+        }
         // Se crean y concatenan las filas de la tabla con los datos de cada registro.
         content += `
             <tr>
+                <td>${row.idusuario}</td>
                 <td>${row.usuario}</td>
-                <td>${row.estado}</td>
+                <td>${row.dui}</td>
+                <td>${row.telefono}</td>
+                <td>${tipo}</td>
                 <td>${row.correo_electronico}</td>
                 <td>
-                    <a href="#" onclick="openDeleteDialog(${row.idusuario})" class="btn waves-effect waves-orange btn deleteButton tooltipped" data-tooltip="Eliminar"><i class="material-icons">delete</i></a>
-                    <a href="#" onclick="openUpdateDialog(${row.idusuario})" class="btn waves-effect btn updateButton tooltipped" data-tooltip="Actualizar"><i class="material-icons">update</i></a>
+                    <a href="#" onclick="openDeleteDialog(${row.idusuario},${accion})" class="btn waves-effect waves-orange btn deleteButton tooltipped" data-tooltip="Eliminar"><i class="material-icons">${icon}</i></a>
+                    <a href="#" onclick="openUpdateModal(${row.idusuario})" class="btn waves-effect btn updateButton tooltipped" data-tooltip="Actualizar"><i class="material-icons">update</i></a>
                 </td>
             </tr>
         `;
     });
     // Se agregan las filas al cuerpo de la tabla mediante su id para mostrar los registros.
     document.getElementById('tbody-rows').innerHTML = content;
-    // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.
-    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
 }
 
-// Método manejador de eventos que se ejecuta cuando se envía el formulario de buscar.
-document.getElementById('search-form').addEventListener('submit', function (event) {
-    // Se evita recargar la página web después de enviar el formulario.
-    event.preventDefault();
-    // Se llama a la función que realiza la búsqueda. Se encuentra en el archivo components.js
+// Funcion para busqueda filtrada 
+function searchUser() {
     searchRows(API_USUARIOS, 'search-form');
-});
+}
 
 // Función para preparar el formulario al momento de insertar un registro.
-function openCreateDialog() {
+function openCreateModal() {
     // Se restauran los elementos del formulario.
     document.getElementById('save-form').reset();
-    // Se abre la caja de dialogo (modal) que contiene el formulario.
-    let instance = M.Modal.getInstance(document.getElementById('save-modal'));
-    instance.open();
-    // Se asigna el título para la caja de dialogo (modal).
-    document.getElementById('modal-title').textContent = 'Crear usuario';
-    // Se habilitan los campos de alias y contraseña.
-    document.getElementById('txtusuario').disabled = false;
+    document.getElementById('txtId').disabled = false;
     document.getElementById('txtClave').disabled = false;
     document.getElementById('txtClave2').disabled = false;
-    // Metodos para llenar el contenido de los combobox
-    fillSelect(ENDPOINT_CATEGORIAS, 'cmbTipo', null);
-    fillSelect(ENDPOINT_ESTADO, 'cmbEstado', null);
+    document.getElementById('txtDui').disabled = false;
+    document.getElementById('cmbTipo').disabled = false;
+    // Ocultamos el input que contiene el ID del registro
+    document.getElementById('auxId').style.display = 'none';
+    // Llenamos el select con los tipos de usuario de la base 
+    fillSelect(API_TIPOUSUARIO, 'cmbTipo', null);
+    // Abrimos el modal con JQuery
+    $('#modalDatos').modal('show');
+}
+
+// Funcion para guardar o modificar datos (se llama en el boton guardar del modal)
+function saveData() {
+    if (document.getElementById("txtClave").value != '') {
+        if (document.getElementById("txtClave").value == document.getElementById("txtClave2").value) {
+            let action = '';
+            if (document.getElementById('auxId').value) {
+                action = 'update';
+            } else {
+                action = 'create';
+            }
+            saveRow(API_USUARIOS, action, 'save-form', 'modalDatos');
+        } else {
+            sweetAlert(3, 'Las claves ingresadas no coinciden', null,'Confirme su contraseña');
+        }
+    } else {
+        sweetAlert(3, 'Complete todos los campos solicitados', null,'No dejes campos vacios');
+    }
 }
 
 // Función para preparar el formulario al momento de modificar un registro.
-function openUpdateDialog(id) {
+function openUpdateModal(id) {
     // Se restauran los elementos del formulario.
     document.getElementById('save-form').reset();
-    // Se abre la caja de dialogo (modal) que contiene el formulario.
-    let instance = M.Modal.getInstance(document.getElementById('save-modal'));
-    instance.open();
-    // Se asigna el título para la caja de dialogo (modal).
-    document.getElementById('modal-title').textContent = 'Actualizar usuario';
+    // Mandamos a llamar el modal desde JS
+    var myModal = new bootstrap.Modal(document.getElementById('modalDatos'));
+    myModal.show();
+    document.getElementById('modal-title').textContent = 'ACTUALIZAR USUARIO';
+    // Ocultamos el input que contiene el ID del registro
+    document.getElementById('auxId').style.display = 'none';
     // Se deshabilitan los campos de alias y contraseña.
-    document.getElementById('txtusuario').disabled = true;
+    document.getElementById('txtId').disabled = true;
     document.getElementById('txtClave').disabled = true;
     document.getElementById('txtClave2').disabled = true;
+    document.getElementById('txtDui').disabled = true;
+    document.getElementById('cmbTipo').disabled = true;
+    document.getElementById('auxId').value = id;
     // Se define un objeto con los datos del registro seleccionado.
     const data = new FormData();
     data.append('txtId', id);
@@ -87,14 +128,13 @@ function openUpdateDialog(id) {
                 if (response.status) {
                     // Se inicializan los campos del formulario con los datos del registro seleccionado.
                     document.getElementById('txtId').value = response.dataset.idusuario;
-                    document.getElementById('txtusuario').value = response.dataset.usuario;
-                    document.getElementById('txtcorreo').value = response.dataset.correo_electronico;
+                    document.getElementById('txtUsuario').value = response.dataset.usuario;
+                    document.getElementById('txtCorreo').value = response.dataset.correo_electronico;
                     document.getElementById('txtClave').value = response.dataset.clave;
+                    document.getElementById('txtTelefono').value = response.dataset.telefono;
+                    document.getElementById('txtDui').value = response.dataset.dui;
                     document.getElementById('txtClave2').value = response.dataset.clave;
-                    fillSelect(ENDPOINT_CATEGORIAS, 'cmbTipo', response.dataset.tipo);
-                    fillSelect(ENDPOINT_ESTADO, 'cmbEstado', response.dataset.estado);
-                    // Se actualizan los campos para que las etiquetas (labels) no queden sobre los datos.
-                    M.updateTextFields();
+                    fillSelect(API_TIPOUSUARIO, 'cmbTipo', response.dataset.tipo);
                 } else {
                     sweetAlert(2, response.exception, null);
                 }
@@ -108,25 +148,12 @@ function openUpdateDialog(id) {
 }
 
 // Función para establecer el registro a eliminar y abrir una caja de dialogo de confirmación.
-function openDeleteDialog(id) {
+function openDeleteDialog(id,accion) {
     // Se define un objeto con los datos del registro seleccionado.
     const data = new FormData();
     data.append('txtId', id);
+    data.append('txtAccion', accion);
     // Se llama a la función que elimina un registro. Se encuentra en el archivo components.js
     confirmDelete(API_USUARIOS, data);
 }
 
-// Método manejador de eventos que se ejecuta cuando se envía el formulario de guardar.
-document.getElementById('save-form').addEventListener('submit', function (event) {
-    // Se evita recargar la página web después de enviar el formulario.
-    event.preventDefault();
-    // Se define una variable para establecer la acción a realizar en la API.
-    let action = '';
-    // Se comprueba si el campo oculto del formulario esta seteado para actualizar, de lo contrario será para crear.
-    if (document.getElementById('txtId').value) {
-        action = 'update';
-    } else {
-        action = 'create';
-    }
-    saveRow(API_USUARIOS, action, 'save-form', 'save-modal');
-});

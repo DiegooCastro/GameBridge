@@ -18,12 +18,12 @@ Dashboard_Page::headerTemplate('Iniciar sesión');
                 <div class="card-content">
                     <form method="post" id="session-form">
                         <div class="form-field">
-                            <label for="alias">Usuario</label>
-                            <input id="alias" type="text" name="alias" class="validate" autocomplete="off" required>
+                            <label for="txtAlias">Usuario</label>
+                            <input id="txtAlias" type="text" name="txtAlias" class="validate" autocomplete="off" required>
                         </div><br>
                         <div class="form-field">
-                            <label for="clave">Contraseña</label>
-                            <input id="clave" type="password" name="clave" class="validate" autocomplete="off" required>
+                            <label for="txtClave">Contraseña</label>
+                            <input id="txtClave" type="password" name="txtClave" class="validate" autocomplete="off" required>
                         </div><br>
                         <div class="form-field center-align">
                             <a><button type="submit" class="button"><span>Ingresar</span>

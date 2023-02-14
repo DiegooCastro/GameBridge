@@ -1,3 +1,4 @@
+
 <?php
 /*
 *	Clase para manejar la tabla productos de la base de datos. Es clase hija de Validator.
@@ -13,6 +14,7 @@ class Productos extends Validator
     private $precio = null;
     private $descripcion = null;
     private $imagen = null;
+    private $accion = null;
     private $ruta = '../../../resources/img/productos/';
 
     /*
@@ -20,7 +22,6 @@ class Productos extends Validator
     */
     public function setId($value)
     {
-        // Validamos el tipo de dato del valor ingresado
         if ($this->validateNaturalNumber($value)) {
             $this->id = $value;
             return true;
@@ -29,20 +30,8 @@ class Productos extends Validator
         }
     }
 
-    public function setCategoria($value)
-    {
-        // Validamos el tipo de dato del valor ingresado
-        if ($this->validateNaturalNumber($value)) {
-            $this->categoria = $value;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public function setEstado($value)
     {
-        // Validamos el tipo de dato del valor ingresado
         if ($this->validateNaturalNumber($value)) {
             $this->estado = $value;
             return true;
@@ -51,9 +40,24 @@ class Productos extends Validator
         }
     }
 
+    public function setCategoria($value)
+    {
+        if ($this->validateNaturalNumber($value)) {
+            $this->categoria = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setAccion($value)
+    {
+        $this->accion = $value;
+        return true;
+    }
+
     public function setMarca($value)
     {
-        // Validamos el tipo de dato del valor ingresado
         if ($this->validateNaturalNumber($value)) {
             $this->marca = $value;
             return true;
@@ -64,7 +68,6 @@ class Productos extends Validator
 
     public function setProducto($value)
     {
-        // Validamos el tipo de dato del valor ingresado
         if ($this->validateAlphanumeric($value, 1, 50)) {
             $this->producto = $value;
             return true;
@@ -75,7 +78,6 @@ class Productos extends Validator
 
     public function setPrecio($value)
     {
-        // Validamos el tipo de dato del valor ingresado
         if ($this->validateMoney($value)) {
             $this->precio = $value;
             return true;
@@ -86,7 +88,6 @@ class Productos extends Validator
 
     public function setDescripcion($value)
     {
-        // Validamos el tipo de dato del valor ingresado
         if ($this->validateAlphanumeric($value, 1, 150)) {
             $this->descripcion = $value;
             return true;
@@ -97,7 +98,6 @@ class Productos extends Validator
 
     public function setImagen($file)
     {
-        // Validamos el tipo de dato del valor ingresado
         if ($this->validateImageFile($file, 500, 500)) {
             $this->imagen = $this->getImageName();
             return true;
@@ -158,13 +158,12 @@ class Productos extends Validator
     public function searchRows($value)
     {
         // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'SELECT idProducto,c.categoria,e.estado,m.marca,producto,precio,descripcion,  imagen 
+        $sql = 'SELECT idProducto,c.categoria,estado,m.marca,producto,precio,p.descripcion,p.imagen 
         FROM productos p
         INNER JOIN categorias c ON c.idCategoria = p.Categoria
-        INNER JOIN estadoProductos e ON e.idEstado = p.estado
         INNER JOIN marcas m ON m.idMarca = p.marca
-        WHERE producto ILIKE ? OR m.marca ILIKE ?
-        ORDER BY c.categoria';
+        WHERE producto ILIKE ? OR c.categoria ILIKE ?
+        ORDER BY estado DESC';
         $params = array("%$value%", "%$value%");
         return Database::getRows($sql, $params);
     }
@@ -174,9 +173,9 @@ class Productos extends Validator
     {
         // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
         $sql = 'INSERT INTO productos(idproducto, categoria, estado, marca, producto, precio, descripcion, imagen,cantidad)
-            VALUES (default, ?, ?, ?, ?, ?, ?, ?,10);';
+            VALUES (default, ?, true, ?, ?, ?, ?, ?,10);';
         // Envio de parametros
-        $params = array($this->categoria, $this->estado, $this->marca, $this->producto, $this->precio, $this->descripcion,  $this->imagen);
+        $params = array($this->categoria, $this->marca, $this->producto, $this->precio, $this->descripcion,  $this->imagen);
         return Database::executeRow($sql, $params);
     }
 
@@ -184,12 +183,29 @@ class Productos extends Validator
     public function readAll()
     {
         // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'SELECT idProducto as id,c.categoria,e.estado,m.marca,producto,precio,descripcion, imagen 
+        $sql = 'SELECT idProducto as id,c.categoria,estado,m.marca,producto,precio,p.descripcion,p.imagen 
         FROM productos p
         INNER JOIN categorias c ON c.idCategoria = p.Categoria
-        INNER JOIN estadoProductos e ON e.idEstado = p.estado
         INNER JOIN marcas m ON m.idMarca = p.marca
-        order by c.categoria';
+        ORDER BY estado DESC';
+        // Envio de parametros
+        $params = null;
+        return Database::getRows($sql, $params);
+    }
+
+    public function readCategoria()
+    {
+        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
+        $sql = 'SELECT idcategoria,categoria FROM categorias ORDER BY categoria';
+        // Envio de parametros
+        $params = null;
+        return Database::getRows($sql, $params);
+    }
+
+    public function readMarca()
+    {
+        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
+        $sql = 'SELECT idmarca,marca FROM marcas ORDER BY marca';
         // Envio de parametros
         $params = null;
         return Database::getRows($sql, $params);
@@ -199,10 +215,9 @@ class Productos extends Validator
     public function readOne()
     {
         // Sentencia SQL
-        $sql = 'SELECT idProducto as id,c.categoria,e.estado,m.marca,producto,precio,descripcion, imagen 
+        $sql = 'SELECT idProducto as id,c.categoria as categoria,estado,m.marca as marca,producto,p.cantidad,precio,p.descripcion, p.imagen as imagen
         FROM productos p
         INNER JOIN categorias c ON c.idCategoria = p.Categoria
-        INNER JOIN estadoProductos e ON e.idEstado = p.estado
         INNER JOIN marcas m ON m.idMarca = p.marca
         WHERE idProducto = ?';
         // Envio de parametros
@@ -221,10 +236,10 @@ class Productos extends Validator
         }
         // Sentencia SQL
         $sql = 'UPDATE productos
-            SET  estado = ?, producto = ? , precio = ?, descripcion = ?, imagen = ?, marca = ?, categoria = ? 
+            SET  producto = ? , precio = ?, descripcion = ?, imagen = ?, marca = ?, categoria = ? 
             WHERE idProducto = ?';
         // Envio de parametros
-        $params = array( $this->estado, $this->producto, $this->precio, $this->descripcion, $this->imagen,$this->marca,$this->categoria, $this->id);
+        $params = array($this->producto, $this->precio, $this->descripcion, $this->imagen,$this->marca,$this->categoria, $this->id);
         return Database::executeRow($sql, $params);
     }
 
@@ -232,99 +247,13 @@ class Productos extends Validator
     public function deleteRow()
     {
         // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'DELETE FROM productos WHERE idProducto = ?';
+        $sql = 'UPDATE productos SET estado = ? WHERE idProducto = ?';
         // Envio de parametros
-        $params = array($this->id);
+        $params = array($this->accion , $this->id);
         return Database::executeRow($sql, $params);
     }
-
-    /*
-    *   Funciones para la generacion de graficos 
-    */  
-
-    // Funcion de grafica de productos mas vendidos
-    public function ventasProductos()
-    {
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'SELECT p.producto, SUM(d.cantidad) cantidad
-		from facturas f
-		INNER JOIN estadofactura ef ON ef.idestado = f.estado
-		INNER JOIN detallepedidos d ON d.pedido = f.idfactura 
-		INNER JOIN productos p ON p.idProducto = d.producto
-		where f.estado = 2
-		group by p.producto order by cantidad DESC';
-        // Envio de parametros
-        $params = null;
-        return Database::getRows($sql, $params);
-    }
-
-    // Funcion para grafica de los clientes con mas compras del sistema
-    public function ventasClientes()
-    {
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = "SELECT c.correo_electronico, c.nombres || ' ' || c.apellidos as nombre,c.dui,COUNT(idcliente) cantidad
-        from facturas f
-        INNER JOIN clientes c ON c.idCliente = f.cliente
-        where f.estado = 2
-        group by c.correo_electronico,c.nombres,c.apellidos,c.dui
-        order by cantidad DESC";
-        // Envio de parametros
-        $params = null;
-        return Database::getRows($sql, $params);
-    }
-
-    // Funcion para reporte de productos productos mas vendidos incluyendo su categoria
-    public function ventasCategorias()
-    {
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'SELECT c.categoria, SUM(d.cantidad) cantidad, p.producto,m.marca
-		FROM facturas f
-		INNER JOIN estadofactura ef ON ef.idestado = f.estado
-		INNER JOIN detallepedidos d ON d.pedido = f.idfactura 
-		INNER JOIN productos p ON p.idProducto = d.producto
-		INNER JOIN marcas m ON m.idMarca = p.marca
-		INNER JOIN categorias c ON c.idcategoria = p.categoria
-		WHERE f.estado = 2
-		GROUP BY c.categoria, p.producto,m.marca order by cantidad DESC';
-        // Envio de parametros
-        $params = null;
-        return Database::getRows($sql, $params);
-    }
-
-    // Funcion para grafica la cantidad de productos vendidos cada dia
-    public function ventasFechas()
-    {
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'SELECT f.fecha, SUM(d.cantidad) cantidad
-        from facturas f
-		INNER JOIN detallepedidos d ON d.pedido = f.idfactura
-        where f.estado = 2
-        group by f.fecha
-        order by f.fecha ASC';
-        // Envio de parametros
-        $params = null;
-        return Database::getRows($sql, $params);
-    }
-
-    // Funcion para grafica de las marcas con mas productos vendidos
-    public function ventasMarcas()
-    {
-        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
-        $sql = 'SELECT m.marca, SUM(d.cantidad) cantidad
-        from facturas f
-        INNER JOIN detallepedidos d ON d.pedido = f.idfactura 
-        INNER JOIN productos p ON p.idProducto = d.producto
-        INNER JOIN marcas m ON m.idmarca = p.marca
-        where f.estado = 2
-        group by m.marca order by cantidad DESC';
-        // Envio de parametros
-        $params = null;
-        return Database::getRows($sql, $params);
-    }
-
-    /*
-    *   Funciones para la generacion de reportes 
-    */ 
+ 
+    /* FUNCIONES PARA REPORTES */
 
     // Funcion para reporte de los clientes con mas productos adquiridos dentro del sistema
     public function comprasClientes()

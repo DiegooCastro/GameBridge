@@ -7,7 +7,7 @@ require_once('../../models/clientes.php');
 if (isset($_GET['action'])) {
     session_start();
     // Se instancia la clase correspondiente.
-    $producto = new Clientes;
+    $clientes = new Clientes;
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'message' => null, 'exception' => null);
     if (isset($_SESSION['idusuario'])) {
@@ -16,7 +16,7 @@ if (isset($_GET['action'])) {
             // Caso para cargar todos datos de la tabla
             case 'readAll': 
                 // Ejecutamos la funcion del modelo
-                if ($result['dataset'] = $producto->cargarDatos()) {
+                if ($result['dataset'] = $clientes->readAll()) {
                     $result['status'] = 1;
                 } else {
                     // Se ejecuta si existe algun error en la base de datos 
@@ -27,30 +27,14 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
-            // Caso para cargar datos con un parametro  
-            case 'readAllParam': 
-                // Obtenemos el post para tener acceso a los inputs del formulario
-                $_POST = $producto->validateForm($_POST);
-                // Ejecutamos la funcion del modelo    
-                if ($result['dataset'] = $producto->cargarDatosParam($_POST['txtIdx'])) {
-                        $result['status'] = 1;
-                    } else {
-                        // Se ejecuta si existe algun error en la base de datos 
-                        if (Database::getException()) {
-                            $result['exception'] = Database::getException();
-                        } else {
-                            $result['exception'] = 'No existen registros';
-                        }
-                    }
-                    break;
             // Caso para realizar busqueda filtrada
             case 'search': 
                 // Obtenemos el post para tener acceso a los inputs del formulario
-                $_POST = $producto->validateForm($_POST);
+                $_POST = $clientes->validateForm($_POST);
                 // Validamos si el contenido del search no esta vacio
                 if ($_POST['search'] != '') {
                     // Ejecutamos la funcion del modelo 
-                    if ($result['dataset'] = $producto->busquedaFiltrada($_POST['search'])) {
+                    if ($result['dataset'] = $clientes->searchRows($_POST['search'])) {
                         $result['status'] = 1;
                         $rows = count($result['dataset']);
                         // Comparamos el numero de filas obtenidas
@@ -74,23 +58,23 @@ if (isset($_GET['action'])) {
             // Caso para ingresar registros a la base de datos
             case 'create': 
                 // Obtenemos el form con los inputs para obtener los datos
-                $_POST = $producto->validateForm($_POST);
-                if ($producto->setNombres($_POST['txtNombre'])) {
-                    if ($producto->setApellidos($_POST['txtApellido'])) {
-                        if ($producto->setDui($_POST['txtDui'])) {
-                            if ($producto->setCorreo($_POST['txtCorreo'])) {
-                                if ($producto->setClave($_POST['txtClave'])) {
+                $_POST = $clientes->validateForm($_POST);
+                if ($clientes->setNombres($_POST['txtNombre'])) {
+                    if ($clientes->setApellidos($_POST['txtApellido'])) {
+                        if ($clientes->setDui($_POST['txtDui'])) {
+                            if ($clientes->setCorreo($_POST['txtCorreo'])) {
+                                if ($clientes->setClave($_POST['txtClave'])) {
                                     if ($_POST['txtClave'] == $_POST['txtClave2']) {
-                                        if ($producto->setClave($_POST['txtClave'])) {
+                                        if ($clientes->setClave($_POST['txtClave'])) {
                                             // Ejecutamos la funcion del modelo 
-                                            if ($producto->ingresarDatos()) {
+                                            if ($clientes->createRow()) {
                                                 $result['status'] = 1;
                                                 $result['message'] = 'Cliente registrado correctamente';
                                             } else {
                                                 $result['exception'] = Database::getException();;           
                                             } 
                                         } else {
-                                            $result['exception'] = $producto->getPasswordError();
+                                            $result['exception'] = $clientes->getPasswordError();
                                         }
                                     } else {
                                         $result['exception'] = 'Claves diferentes';
@@ -115,9 +99,9 @@ if (isset($_GET['action'])) {
             // Caso para cargar los datos de un registro en especifico
             case 'readOne': 
                 // Obtenemos el valor del id
-                if ($producto->setId($_POST['id'])) {
+                if ($clientes->setId($_POST['txtId'])) {
                     // Ejecutamos la funcion del modelo 
-                    if ($result['dataset'] = $producto->cargarFila()) {
+                    if ($result['dataset'] = $clientes->readOne()) {
                         $result['status'] = 1;
                     } else {
                         if (Database::getException()) {
@@ -133,33 +117,20 @@ if (isset($_GET['action'])) {
             // Caso para modificar registros en la base de datos
             case 'update': 
                 // Obtenemos el form con los inputs para obtener los datos
-                $_POST = $producto->validateForm($_POST);
-                if ($producto->setId($_POST['txtId'])) {
-                    if ($producto->setNombres($_POST['txtNombre'])) {
-                        if ($producto->setApellidos($_POST['txtApellido'])) {
-                            if ($producto->setDui($_POST['txtDui'])) {
-                                if ($producto->setCorreo($_POST['txtCorreo'])) {
-                                    if (isset($_POST['cmbEstado'])) {
-                                        if ($producto->setEstado($_POST['cmbEstado'])) {
-                                            // Ejecutamos la funcion del modelo 
-                                            if ($producto->actualizarDatos()) {
-                                                $result['status'] = 1;
-                                                $result['message'] = 'Cliente modificado correctamente';
-                                            } else {
-                                                $result['exception'] = Database::getException();
-                                            }
-                                        } else {
-                                            $result['exception'] = 'Categoría incorrecta';
-                                        }
-                                    } else {
-                                        $result['exception'] = 'Seleccione una categoría';
-                                    }                                                     
+                $_POST = $clientes->validateForm($_POST);
+                if ($clientes->setId($_POST['auxId'])) {
+                    if ($clientes->setNombres($_POST['txtNombre'])) {
+                        if ($clientes->setApellidos($_POST['txtApellido'])) {
+                            if ($clientes->setCorreo($_POST['txtCorreo'])) {
+                                if ($clientes->updateRow()) {
+                                    $result['status'] = 1;
+                                    $result['message'] = 'Cliente modificado correctamente';
                                 } else {
-                                    $result['exception'] = 'Correo incorrecto';
-                                }                                                                                    
+                                    $result['exception'] = Database::getException();
+                                }                        
                             } else {
-                                $result['exception'] = 'Dui incorrecto';
-                            }                                                                                     
+                                $result['exception'] = 'Correo incorrecto';
+                            }                                                                                                                                                            
                         } else {
                             $result['exception'] = 'Apellido incorrecto';
                         }
@@ -173,19 +144,23 @@ if (isset($_GET['action'])) {
             // Caso para eliminar registros en la base de datos
             case 'delete':  
                 // Obtenemos el form con los inputs para obtener los datos
-                $_POST = $producto->validateForm($_POST);
+                $_POST = $clientes->validateForm($_POST);
                 // Obtenemos el valor del id
-                if ($producto->setId($_POST['id'])) {
-                    if ($data = $producto->cargarFila()) {
-                        // Ejecutamos la funcion del modelo 
-                        if ($producto->eliminarDatos()) {
-                            $result['status'] = 1;
-                            $result['message'] = 'Cliente eliminado correctamente';
+                if ($clientes->setId($_POST['txtId'])) {
+                    if ($clientes->setAccion($_POST['txtAccion'])) {
+                        if ($data = $clientes->readOne()) {
+                            // Ejecutamos la funcion del modelo 
+                            if ($clientes->deleteRow()) {
+                                $result['status'] = 1;
+                                $result['message'] = 'Estado actualizado correctamente';
+                            } else {
+                                $result['exception'] = Database::getException();
+                            }
                         } else {
-                            $result['exception'] = Database::getException();
+                            $result['exception'] = 'Cliente inexistente';
                         }
                     } else {
-                        $result['exception'] = 'Cliente inexistente';
+                        $result['exception'] = 'Accion incorrecta';
                     }
                 } else {
                     $result['exception'] = 'Cliente incorrecto';
