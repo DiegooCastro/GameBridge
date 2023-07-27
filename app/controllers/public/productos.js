@@ -48,20 +48,22 @@ function readProductosCategoria(id) {
                                         <h5 class="card-title">
                                             ${row.descripcion}
                                         </h5>
+                                        
                                         <div class="text-center my-4">
                     
-                                        <a href="detalle.php?id=${row.idproducto}" class="btn btn-outline-dark"> 
-                                            <div class="row">
-                                                <div class="col-9">
-                                                    <p class="buttonProducts">Añadir al carrito</p>
-                                                </div>
-                                                <div class="col-3">
-                                                    <span class="material-symbols-outlined buttonProductsIcon"> add_shopping_cart</span>
-                                                </div>
-                                            </div>                    
-                                        </a>
+                                            <a href="detalle.php?id=${row.idproducto}" class="btn btn-outline-dark"> 
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <p class="buttonProducts">Añadir al carrito</p>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <span class="material-symbols-outlined buttonProductsIcon"> add_shopping_cart</span>
+                                                    </div>
+                                                </div>                    
+                                            </a>
                     
                                         </div>
+                                        
                                         <div class="clearfix mb-1">
                                         <span class="float-start"><i class="far fa-question-circle"></i></span>
                                         <span class="float-end"><i class="fas fa-plus"></i></span>

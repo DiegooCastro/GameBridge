@@ -60,8 +60,8 @@ h2 {
 
 .label-top {
   position: absolute;
-  background-color: gold;
-  color: black;
+  background-color: #c81d11;
+  color: white;
   top: 8px;
   right: 8px;
   padding: 5px 10px 5px 10px;

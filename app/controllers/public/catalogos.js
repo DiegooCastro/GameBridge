@@ -27,9 +27,11 @@ function readAllCategorias() {
                                         <div class="card-body">
                                             <h5 class="card-title">${row.categoria}</h5>
                                             <p class="card-text">${row.descripcion}</p>
+                                            
                                             <div class="categoryButtonAlign">
-                                                <a href="${url}" class="btn btn-outline-dark categoryButton"> Ver productos <i class="bi bi-cart-plus-fill categoryIcons"></i></a>
+                                                <a href="${url}" class="btn btn-outline-dark categoryButton"> Ver productos</a>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>

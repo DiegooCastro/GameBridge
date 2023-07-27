@@ -184,22 +184,14 @@ class Public_Page
         
           <title>'.$title.'</title>
 
-          <!-- Favicons -->
           <link type="image/png" rel="icon" href="../../resources/img/brand/icono.png"/>
         
-          <!-- Google Fonts -->
           <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-        
-          <!-- Vendor CSS Files -->
+    
           <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
-          <link href="../../framework/aos/aos.css" rel="stylesheet">
-          <link href="../../framework/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-          <link href="../../framework/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-          <link href="../../framework/boxicons/css/boxicons.min.css" rel="stylesheet">
-          <link href="../../framework/glightbox/css/glightbox.min.css" rel="stylesheet">
-          <link href="../../framework/swiper/swiper-bundle.min.css" rel="stylesheet">
-        
-          <!-- Template Main CSS File -->
+          <link href="../../resources/css/bootstrap.min.css" rel="stylesheet">
+          <link href="../../resources/css/bootstrap-icons.css" rel="stylesheet">
+
           <link href="../../resources/css/styles.css" rel="stylesheet">
         ');
 
@@ -219,22 +211,6 @@ class Public_Page
                 </head>
 
                 <body>
-        
-                <!-- ======= Top Bar ======= -->
-                <section id="topbar" class="d-flex align-items-center">
-                  <div class="container d-flex justify-content-center justify-content-md-between">
-                    <div class="contact-info d-flex align-items-center">
-                      <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:Gamebridge@gmail.com">Gamebridge@gmail.com</a></i>
-                      <i class="bi bi-phone d-flex align-items-center ms-4"><span>+503 7988 5288</span></i>
-                    </div>
-                    <div class="social-links d-none d-md-flex align-items-center">
-                      <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                      <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                      <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                      <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></i></a>
-                    </div>
-                  </div>
-                </section>
               
                 <header id="header" class="d-flex align-items-center">
                   <div class="container d-flex justify-content-between">
@@ -261,7 +237,6 @@ class Public_Page
                 header('location: index.php');
             }
         } else {
-            // Se verifica si la página web actual es diferente a index.php (Iniciar sesión) y a register.php (Crear primer usuario) para direccionar a index.php, de lo contrario se muestra un menú vacío.
             if ($filename != 'cart.php') {
                 print('
                 <body>
@@ -297,7 +272,7 @@ class Public_Page
                         
                       </ul>
                       <i class="bi bi-list mobile-nav-toggle"></i>
-                    </nav><!-- .navbar -->
+                    </nav>
               
                   </div>
                 </header>
@@ -311,15 +286,13 @@ class Public_Page
             print('
             <section id="breadcrumbs" class="breadcrumbs">
                 <div class="container">
-        
-                <div class="d-flex justify-content-between align-items-center">
-                    <h2 id="subtitulo">'.$page.'</h2>
-                    <ol>
-                    <li><a href="index.php">Inicio</a></li>
-                    <li>'.$page.'</li>
-                    </ol>
-                </div>
-        
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 id="subtitulo">'.$page.'</h2>
+                        <ol>
+                        <li><a href="index.php">Inicio</a></li>
+                        <li>'.$page.'</li>
+                        </ol>
+                    </div>
                 </div>
           </section>');
         }
@@ -344,13 +317,7 @@ class Public_Page
         } 
         // Se imprime el código HTML para el pie del documento.
         print('
-                <!-- Vendor JS Files -->
-                <script src="../../framework/purecounter/purecounter_vanilla.js"></script>
-                <script src="../../framework/aos/aos.js"></script>
-                <script src="../../framework/bootstrap/js/bootstrap.bundle.min.js"></script>
-                <script src="../../framework/glightbox/js/glightbox.min.js"></script>
-                <script src="../../framework/isotope-layout/isotope.pkgd.min.js"></script>
-                <script src="../../framework/swiper/swiper-bundle.min.js"></script>
+                <script src="../../resources/js/bootstrap.bundle.min.js"></script>
 
                 <script type="text/javascript" src="../../resources/js/main.js"></script>
                 <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
