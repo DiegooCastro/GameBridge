@@ -12,7 +12,7 @@ Public_Page::headerTemplate2('Productos por categría','Detalle de producto');
         <div class="row gy-4">
 
           <div class="col-lg-7">
-            <img id="imagen" src="../../resources/img/unknown.png">
+            <img id="imagen" src="">
           </div>
 
           <div class="col-lg-5">

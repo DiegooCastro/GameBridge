@@ -5,7 +5,6 @@ require_once('../../app/helpers/public_page.php');
 Public_Page::headerTemplate2('Catalogo de productos','Productos');
 ?>
 
-<link rel="stylesheet" href="cards.css">
 
   <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative">
     <div id="productos" class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">

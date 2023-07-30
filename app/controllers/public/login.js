@@ -1,11 +1,8 @@
 // Constante para establecer la ruta y parámetros de comunicación con la API.
 const API_CLIENTES = '../../app/api/public/clientes.php?action=';
 
-// Método manejador de eventos que se ejecuta cuando se envía el formulario de cambiar cantidad de producto.
-document.getElementById('session-form').addEventListener('submit', function (event) {
-    // Se evita recargar la página web después de enviar el formulario.
-    event.preventDefault();
 
+function iniciarSesion(){
     fetch(API_CLIENTES + 'logIn', {
         method: 'post',
         body: new FormData(document.getElementById('session-form'))
@@ -26,4 +23,4 @@ document.getElementById('session-form').addEventListener('submit', function (eve
     }).catch(function (error) {
         console.log(error);
     });
-});
+}

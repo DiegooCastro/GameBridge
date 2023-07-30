@@ -609,7 +609,7 @@ footer {
 }
 
 #footer {
-  background: url("../img/footer-bg.jpg") center center no-repeat;
+  background-color: black;
   color: #fff;
   font-size: 14px;
   position: relative;
@@ -780,3 +780,6 @@ footer {
   padding-left: 10px;
 }
 
+.botonLogin {
+  width: 320px;
+}

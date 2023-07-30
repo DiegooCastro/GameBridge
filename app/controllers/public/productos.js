@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const NAME = params.get('categoria');
     // Se llama a la función que muestra los productos de la categoría seleccionada previamente.
     readProductosCategoria(ID, NAME);
-
     const p = document.getElementById("subtitulo");
     p.innerText = "Categoría: " + NAME;
 
@@ -21,7 +20,6 @@ function readProductosCategoria(id) {
     // Se define un objeto con los datos del registro seleccionado.
     const data = new FormData();
     data.append('id_categoria', id);
-
     fetch(API_CATALOGO + 'readProductosCategoria', {
         method: 'post',
         body: data
@@ -45,12 +43,8 @@ function readProductosCategoria(id) {
                                         <span class="float-start badge rounded-pill bg-secondary">&dollar;${row.precio}</span>
                                         <span class="float-end"><a href="detalle.php?id=${row.idproducto}" class="small text-muted">Ver detalles</a></span>
                                         </div>
-                                        <h5 class="card-title">
-                                            ${row.descripcion}
-                                        </h5>
-                                        
+                                        <h5 class="card-title"> ${row.descripcion} </h5>
                                         <div class="text-center my-4">
-                    
                                             <a href="detalle.php?id=${row.idproducto}" class="btn btn-outline-dark"> 
                                                 <div class="row">
                                                     <div class="col-9">
@@ -61,26 +55,19 @@ function readProductosCategoria(id) {
                                                     </div>
                                                 </div>                    
                                             </a>
-                    
                                         </div>
-                                        
                                         <div class="clearfix mb-1">
-                                        <span class="float-start"><i class="far fa-question-circle"></i></span>
-                                        <span class="float-end"><i class="fas fa-plus"></i></span>
+                                            <span class="float-start"><i class="far fa-question-circle"></i></span>
+                                            <span class="float-end"><i class="fas fa-plus"></i></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     `;
                     });
-                    // Se asigna como título la categoría de los productos.
-                   // document.getElementById('title').textContent = 'Categoría: ' + categoria;
                     // Se agregan las tarjetas a la etiqueta div mediante su id para mostrar los productos.
                     document.getElementById('productos').innerHTML = content;
-                    // Se inicializa el componente Material Box asignado a las imagenes para que funcione el efecto Lightbox.
-                    M.Materialbox.init(document.querySelectorAll('.materialboxed'));
-                    // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.
-                    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
                 } else {
                     // Se presenta un mensaje de error cuando no existen datos para mostrar.
                     document.getElementById('title').innerHTML = `<i class="material-icons small">cloud_off</i><span class="red-text">${response.exception}</span>`;
