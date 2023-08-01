@@ -32,7 +32,7 @@ class Public_Page
         // Se comprueba si existe una sesión de cliente para mostrar el menú de opciones, de lo contrario se muestra otro menú.
         if (isset($_SESSION['id_cliente'])) {
             // Se verifica si la página web actual es diferente a login.php y register.php, de lo contrario se direcciona a index.php
-            if ($filename != 'login.php' && $filename != 'signin.php') {
+            if ($filename != 'register.php' && $filename != 'signin.php') {
                 print('
                 </head>
                     <body>
@@ -70,16 +70,23 @@ class Public_Page
                                 <li><a class="nav-link scrollto " href="index.php">Inicio</a></li>
                                 <li><a class="nav-link scrollto " href="catalogos.php">Catalogo</a></li>
                 ');
-                if ($filename != 'signin.php') {
-                    print(' <li><a class="nav-link scrollto" href="register.php">Crear Cuenta</a></li>
-                            <li><a class="nav-link scrollto" href="signin.php">Iniciar Sesión</a></li>     
+                if ($filename == 'signin.php') {
+                    print('</ul>
+                            <i class="bi bi-list mobile-nav-toggle"></i>
+                            </nav>
+                        </div>
+                    </header>');
+                } else if ($filename == 'register.php') {
+                    print(' <li><a class="nav-link scrollto" href="signin.php">Iniciar Sesión</a></li>     
                             </ul>
                             <i class="bi bi-list mobile-nav-toggle"></i>
                             </nav>
                         </div>
                     </header>');
-                } else{ 
-                    print(' </ul>
+                } else { 
+                    print(' <li><a class="nav-link scrollto" href="register.php">Crear Cuenta</a></li>
+                            <li><a class="nav-link scrollto" href="signin.php">Iniciar Sesión</a></li>     
+                            </ul>
                             <i class="bi bi-list mobile-nav-toggle"></i>
                             </nav>
                         </div>
@@ -88,8 +95,7 @@ class Public_Page
             } else {
                 header('location: login.php');
             }
-        }
-        if ($filename != 'index.php' && $filename != 'carrito.php' && $filename != 'signin.php') {
+        } if ($filename != 'index.php' && $filename != 'carrito.php' && $filename != 'signin.php' && $filename != 'register.php') {
             print('
             <section id="breadcrumbs" class="breadcrumbs">
                 <div class="container">
@@ -108,7 +114,7 @@ class Public_Page
     public static function footerTemplate2($controller)
     {
         $filename = basename($_SERVER['PHP_SELF']);
-        if ($filename != 'carrito.php' && $filename != 'signin.php') {
+        if ($filename != 'carrito.php' && $filename != 'signin.php' && $filename != 'register.php') {
             print('
             <footer id="footer">
                 <div class="container footer-bottom clearfix">

@@ -29,88 +29,46 @@ if (isset($_GET['action'])) {
     } else {
         // Se compara la acción a realizar cuando el cliente no ha iniciado sesión.
         switch ($_GET['action']) {
-            case 'register':
+            case 'register': 
+                // Obtenemos el form con los inputs para obtener los datos
                 $_POST = $cliente->validateForm($_POST);
-                // Se sanea el valor del token para evitar datos maliciosos.
-                $token = filter_input(INPUT_POST, 'g-recaptcha-response', FILTER_SANITIZE_STRING);
-                if ($token) {
-                    $secretKey = '6LdBzLQUAAAAAL6oP4xpgMao-SmEkmRCpoLBLri-';
-                    $ip = $_SERVER['REMOTE_ADDR'];
-
-                    $data = array(
-                        'secret' => $secretKey,
-                        'response' => $token,
-                        'remoteip' => $ip
-                    );
-
-                    $options = array(
-                        'http' => array(
-                            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                            'method'  => 'POST',
-                            'content' => http_build_query($data)
-                        ),
-                        'ssl' => array(
-                            'verify_peer' => false,
-                            'verify_peer_name' => false
-                        )
-                    );
-
-                    $url = 'https://www.google.com/recaptcha/api/siteverify';
-                    $context  = stream_context_create($options);
-                    $response = file_get_contents($url, false, $context);
-                    $captcha = json_decode($response, true);
-
-                    if ($captcha['success']) {
-                        if ($cliente->setNombres($_POST['nombres_cliente'])) {
-                            if ($cliente->setApellidos($_POST['apellidos_cliente'])) {
-                                if ($cliente->setCorreo($_POST['correo_cliente'])) {
-                                    if ($cliente->setDireccion($_POST['direccion_cliente'])) {
-                                        if ($cliente->setDUI($_POST['dui_cliente'])) {
-                                            if ($cliente->setNacimiento($_POST['nacimiento_cliente'])) {
-                                                if ($cliente->setTelefono($_POST['telefono_cliente'])) {
-                                                    if ($_POST['clave_cliente'] == $_POST['confirmar_clave']) {
-                                                        if ($cliente->setClave($_POST['clave_cliente'])) {
-                                                            if ($cliente->createRow()) {
-                                                                $result['status'] = 1;
-                                                                $result['message'] = 'Cliente registrado correctamente';
-                                                            } else {
-                                                                $result['exception'] = Database::getException();
-                                                            }
-                                                        } else {
-                                                            $result['exception'] = $cliente->getPasswordError();
-                                                        }
-                                                    } else {
-                                                        $result['exception'] = 'Claves diferentes';
-                                                    }
-                                                } else {
-                                                    $result['exception'] = 'Teléfono incorrecto';
-                                                }
+                if ($cliente->setNombres($_POST['nombre'])) {
+                    if ($cliente->setApellidos($_POST['apellido'])) {
+                        if ($cliente->setDui($_POST['dui'])) {
+                            if ($cliente->setCorreo($_POST['correo'])) {
+                                if ($cliente->setClave($_POST['clave'])) {
+                                    if ($_POST['clave'] == $_POST['clave2']) {
+                                        if ($cliente->setClave($_POST['clave'])) {
+                                            // Ejecutamos la funcion del modelo 
+                                            if ($cliente->createRow()) {
+                                                $result['status'] = 1;
+                                                $result['message'] = 'Cliente registrado correctamente';
                                             } else {
-                                                $result['exception'] = 'Fecha de nacimiento incorrecta';
-                                            }
+                                                $result['exception'] = Database::getException();;           
+                                            } 
                                         } else {
-                                            $result['exception'] = 'DUI incorrecto';
+                                            $result['exception'] = $clientes->getPasswordError();
                                         }
                                     } else {
-                                        $result['exception'] = 'Dirección incorrecta';
-                                    }
+                                        $result['exception'] = 'Claves diferentes';
+                                    }                                                               
                                 } else {
-                                    $result['exception'] = 'Correo incorrecto';
-                                }
+                                    $result['exception'] = 'Clave incorrecta';
+                                }                                                                                
                             } else {
-                                $result['exception'] = 'Apellidos incorrectos';
-                            }
+                                $result['exception'] = 'Correo incorrecto';
+                            }                                                                                    
                         } else {
-                            $result['exception'] = 'Nombres incorrectos';
-                        }
+                            $result['exception'] = 'Dui incorrecto';
+                        }                                                                                     
                     } else {
-                        $result['recaptcha'] = 1;
-                        $result['exception'] = 'No eres un humano';
+                        $result['exception'] = 'Apellido incorrecto';
                     }
                 } else {
-                    $result['exception'] = 'Ocurrió un problema al cargar el reCAPTCHA';
+                    $result['exception'] = 'Nombre incorrecto';
                 }
                 break;
+
             case 'logIn':
                 $_POST = $cliente->validateForm($_POST);
                 if ($cliente->checkUser($_POST['usuario'])) {

@@ -32,11 +32,11 @@ Public_Page::headerTemplate2('Gamebridge | Inicio sesion','Iniciar sesión');
                         <input type="password" id="clave" name="clave" class="form-control form-control-lg" />
                     </div>
                     <div class="pt-1 mb-4">
-                        <center><button onclick="iniciarSesion()" class="btn btn-dark btn-lg btn-block botonLogin" type="button">Iniciar sesión</button></center>
+                        <center><button onclick="iniciarSesion()" class="btn btn-dark btn-lg btn-block botonLogin" type="button">Iniciar sesión</button></center><br>
                     </div>
                     <a class="small text-muted" href="#!">Olvidaste tu contraseña?</a>
                     <p class="mb-5 pb-lg-2" style="color: #393f81;">No tienes una cuenta? 
-                        <a href="index.php" style="color: #393f81;">Registrate aqui</a>
+                        <a href="register.php" style="color: #393f81;">Registrate aqui</a>
                     </p>    
                 </form>
               </div>
@@ -50,5 +50,5 @@ Public_Page::headerTemplate2('Gamebridge | Inicio sesion','Iniciar sesión');
 
 <?php
 // Se imprime la plantilla del pie enviando el nombre del controlador para la página web.
-Public_Page::footerTemplate2('login.js');
+Public_Page::footerTemplate2('signin.js');
 ?>
