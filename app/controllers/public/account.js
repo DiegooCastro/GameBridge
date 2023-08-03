@@ -1,8 +1,3 @@
-/*
-*   Este controlador es de uso general en las páginas web del sitio público. Se importa en la plantilla del pie del documento.
-*   Sirve para manejar todo lo que tiene que ver con la cuenta del cliente.
-*/
-
 // Constante para establecer la ruta y parámetros de comunicación con la API.
 const API = '../../app/api/public/clientes.php?action=';
 

@@ -5,7 +5,6 @@ require_once('../../app/helpers/public_page.php');
 Public_Page::headerTemplate2('Productos por categría','Detalle de producto');
 ?>
 
-<main id="main">
     <section id="portfolio-details" class="portfolio-details">
       <div class="container">
 
@@ -51,9 +50,8 @@ Public_Page::headerTemplate2('Productos por categría','Detalle de producto');
         </div>
 
       </div>
-    </section><!-- End Portfolio Details Section -->
+    </section>
 
-  </main><!-- End #main -->
 
   <?php
 // Se imprime la plantilla del pie enviando el nombre del controlador para la página web.

@@ -46,7 +46,7 @@ class Public_Page
                                 <li><a class="nav-link scrollto " href="index.php">Inicio</a></li>
                                 <li><a class="nav-link scrollto " href="catalogos.php">Catalogo</a></li>
                                 <li><a class="nav-link scrollto" href="cart.php">Carrito</a></li>
-                                <li><a class="nav-link scrollto"> Usuario: '.$_SESSION['correo_cliente'].'</a></li>
+                                <li><a class="nav-link scrollto" onclick="logOut()"> Usuario: '.$_SESSION['correo_cliente'].'</a></li>
                             </ul>
                             <i class="bi bi-list mobile-nav-toggle"></i>
                             </nav>
@@ -147,7 +147,7 @@ class Public_Page
                     <script src="../../resources/js/bootstrap.bundle.min.js"></script>
                     <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
                     <script type="text/javascript" src="../../app/helpers/components.js"></script>
-                    <!--<script type="text/javascript" src="../../app/controllers/public/logout.js"></script> -->
+                    <script type="text/javascript" src="../../app/controllers/public/account.js"></script> 
                     <script type="text/javascript" src="../../app/controllers/public/' . $controller . '"></script>
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 </body>

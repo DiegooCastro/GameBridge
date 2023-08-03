@@ -87,7 +87,7 @@ document.getElementById('shopping-form').addEventListener('submit', function (ev
                     if (response.session) {
                         sweetAlert(2, response.exception, null);
                     } else {
-                        sweetAlert(3, response.exception, 'login.php');
+                        sweetAlert(3, response.exception, 'signin.php');
                     }
                 }
             });
