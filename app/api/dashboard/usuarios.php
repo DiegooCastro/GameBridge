@@ -58,22 +58,7 @@ if (isset($_GET['action'])) {
                 }
             }
             break;     
-            case 'readAllParam':
-                // Ejecutamos la funcion del modelo 
-                $_POST = $usuario->validateForm($_POST);
-
-                if ($result['dataset'] = $usuario->readHistory($_POST['txtIdX'])) {
-                    $result['status'] = 1;
-                } else {
-                    if (Database::getException()) {
-                        $result['exception'] = Database::getException();
-                    } else {
-                        $result['exception'] = 'Registro inexistente';
-                    }
-                }
-
-                break;
-                // Caso para realizar busqueda filtrada
+            // Caso para realizar busqueda filtrada
             case 'search':
                 // Obtenemos el post para tener acceso a los inputs del formulario
                 $_POST = $usuario->validateForm($_POST);

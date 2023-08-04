@@ -2,42 +2,43 @@
 // Se incluye la clase con las plantillas del documento.
 require_once('../../app/helpers/dashboard_page.php');
 // Se imprime la plantilla del encabezado enviando el título de la página web.
-Dashboard_Page::headerTemplate('Administrar facturas');
+Dashboard_Page::headerTemplate2('Administrar facturas','Facturas');
 ?>
 
 <head>
   <!-- Seccion para incluir CSS -->
   <link type="text/css" rel="stylesheet" href="../../resources/css/styles.css" />
 </head>
-<div class="container">
-  <!-- Componente Modal para mostrar una caja de dialogo -->
-  <div class="row">
-    <div class="col l6">
-      <h5 class="h5">
-        <img src="../../resources/img/factura_logo.png" height="40" width="40" alt="">
-        Gestión de facturas
-      </h5>
-    </div>
-  </div>
-</div>
-<div class="container">
-  <div class="row">
-    <form method="post" id="search-form">
-      <div class="input-field col s6 m4 ">
-        <input id="search" type="text" name="search" required />
-        <label for="search">Buscar por nombre de cliente</label>
-      </div>
-      <div class="input-field col s6 m4">
-        <button type="submit" class="btn waves-effect green tooltipped" data-tooltip="Buscar"><i class="material-icons">search</i></button>
-        <a href="../../app/reports/dashboard/facturas.php" target="_blank" class="btn waves-effect amber tooltipped" data-tooltip="Reporte de compras realizadas en un día"><i class="material-icons">assignment</i></a>
-      </div>
-    </form>
-  </div>
-</div> <br><br>
+
+<div class="container"><br><br>
+        <div class="row"> 
+          <!-- Formulario de búsqueda -->
+          <div class="row">
+              <div class="col col-lg-10 col-md-8">
+                <div class="row">
+                  <div class="col col-md-8 col-lg-6">
+                    <!-- Formulario de búsqueda -->
+                    <form method="post" id="search-form">
+                        <div class="input-field">
+                            <input type="text" name="search" class="form-control" id="search" placeholder="Buscar por nombre de cliente">
+                        </div>
+                    </form>
+                  </div>
+                  <div class="col col-md-4 col-lg-6">
+                    <div class="input-field">
+                      <button type="button" onclick="searchProduct()" class="btn waves-effect green tooltipped" data-tooltip="Buscar"><i class="material-icons">search</i></button>
+                      <a href="../../app/reports/dashboard/productos.php" target="_blank" class="btn waves-effect amber tooltipped" data-tooltip="Reporte de usuarios por tipo"><i class="material-icons">assignment</i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div> <br><br>
+
 <div class="container">
   <!-- Seccion tabla -->
-  <table class="highlight centered responsive-table" id="miTabla">
-    <thead>
+  <table class="table" id="miTabla">
+    <thead class="table-dark">
       <tr id="tableHeader">
         <th>Cliente</th>
         <th>Estado de factura</th>
@@ -116,5 +117,5 @@ Dashboard_Page::headerTemplate('Administrar facturas');
 </div>
 <?php
 // Se imprime la plantilla del pie enviando el nombre del controlador para la página web.
-Dashboard_Page::footerTemplate('facturas.js');
+Dashboard_Page::footerTemplate2('facturas.js');
 ?>

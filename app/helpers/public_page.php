@@ -4,7 +4,7 @@
 */
 class Public_Page
 {
-    public static function headerTemplate2($title,$page)
+    public static function headerTemplate($title,$page)
     {
         session_start();
         $filename = basename($_SERVER['PHP_SELF']);
@@ -15,7 +15,7 @@ class Public_Page
                     <meta charset="utf-8">
                     <meta content="width=device-width, initial-scale=1.0" name="viewport">   
                     <title>'.$title.'</title>
-                    <link type="image/png" rel="icon" href="../../resources/img/brand/icono.png"/> 
+                    <link type="image/png" rel="icon" href="../../resources/img/icono.png"/> 
                     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
                     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
                     <link href="../../resources/css/bootstrap.min.css" rel="stylesheet">
@@ -111,7 +111,7 @@ class Public_Page
         }
     }
 
-    public static function footerTemplate2($controller)
+    public static function footerTemplate($controller)
     {
         $filename = basename($_SERVER['PHP_SELF']);
         if ($filename != 'carrito.php' && $filename != 'signin.php' && $filename != 'register.php') {
@@ -122,7 +122,7 @@ class Public_Page
                         &copy; Copyright <strong><span>Gamebridge</span></strong>. Derechos reservados
                     </div>
                     <div class="credits">
-                        Diseñado con <a href="https://bootstrapmade.com/">Boostrap</a>
+                        Diseñado por <a href="https://bootstrapmade.com/">Diego Castro</a>
                     </div>
                 </div>
             </footer>
@@ -144,7 +144,7 @@ class Public_Page
         );
         } 
         print('
-                    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+                    <script type="text/javascript" src="../../resources/js/bootstrap.bundle.min.js"></script>
                     <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
                     <script type="text/javascript" src="../../app/helpers/components.js"></script>
                     <script type="text/javascript" src="../../app/controllers/public/account.js"></script> 

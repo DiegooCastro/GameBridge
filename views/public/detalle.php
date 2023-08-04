@@ -2,7 +2,7 @@
 // Se incluye la clase con las plantillas del documento.
 require_once('../../app/helpers/public_page.php');
 // Se imprime la plantilla del encabezado enviando el título de la página web.
-Public_Page::headerTemplate2('Productos por categría','Detalle de producto');
+Public_Page::headerTemplate('Gamebridge | Categorías','Detalle de producto');
 ?>
 
     <section id="portfolio-details" class="portfolio-details">
@@ -55,5 +55,5 @@ Public_Page::headerTemplate2('Productos por categría','Detalle de producto');
 
   <?php
 // Se imprime la plantilla del pie enviando el nombre del controlador para la página web.
-Public_Page::footerTemplate2('detalle.js');
+Public_Page::footerTemplate('detalle.js');
 ?>

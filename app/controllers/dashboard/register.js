@@ -3,8 +3,6 @@ const API_USUARIOS = '../../app/api/dashboard/usuarios.php?action=';
 
 // Método manejador de eventos que se ejecuta cuando el documento ha cargado.
 document.addEventListener('DOMContentLoaded', function () {
-    // Se inicializa el componente Tooltip asignado al botón del formulario para que funcione la sugerencia textual.
-    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
     // Petición para verificar si existen usuarios.
     fetch(API_USUARIOS + 'readAll', {
         method: 'get'
@@ -27,11 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// Método manejador de eventos que se ejecuta cuando se envía el formulario de registrar.
-document.getElementById('register-form').addEventListener('submit', function (event) {
-    // Se evita recargar la página web después de enviar el formulario.
-    event.preventDefault();
-
+function registrarUsuario(){
     fetch(API_USUARIOS + 'register', {
         method: 'post',
         body: new FormData(document.getElementById('register-form'))
@@ -52,4 +46,4 @@ document.getElementById('register-form').addEventListener('submit', function (ev
     }).catch(function (error) {
         console.log(error);
     });
-});
+}

@@ -6,8 +6,7 @@ Dashboard_Page::headerTemplate2('Administrar productos','Productos');
 ?>
 <section class="inner-page">
       <div class="container">
-      <div class="row">
-        
+        <div class="row"> 
           <!-- Formulario de búsqueda -->
           <div class="row">
               
@@ -42,7 +41,7 @@ Dashboard_Page::headerTemplate2('Administrar productos','Productos');
                 </div>
                 
               </div>
-          </div>
+        </div>
       </div> <br><br>
 
       <div class="container">

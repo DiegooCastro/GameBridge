@@ -2,55 +2,65 @@
 // Se incluye la clase con las plantillas del documento.
 require_once('../../app/helpers/dashboard_page.php');
 // Se imprime la plantilla del encabezado enviando el título de la página web.
-Dashboard_Page::headerTemplate('Registrar primer usuario');
+Dashboard_Page::headerLogin('Registro de usuarios');
 ?>
-<main class="container">  <!-- Abre contenedor para incluir el contenido de la pagina -->
-    <head>  <!-- Manda a llamar el css de la pagina -->
-        <link type="text/css" rel="stylesheet" href="../../resources/css/styles.css" />
-    </head>                                                                                                                                                                                                                                         <br>
-    <h3 class="center-align">Creación de primer usuario</h3>
-    <!-- Formulario para registrar al primer usuario del dashboard -->
-    <form method="post" id="register-form">
-        <div class="row">
-            <div class="input-field col s12 m6">
-                <i class="material-icons prefix ">person_pin</i>
-                <input id="txtAlias" type="text" name="txtAlias" autocomplete="off" class="validate" required />
-                <label for="alias">Nombre de usuario</label>
-            </div>
-            <div class="input-field col s12 m6">
-                <i class="material-icons prefix">email</i>
-                <input id="txtCorreo" type="email" name="txtCorreo" autocomplete="off" class="validate" required />
-                <label for="correo">Correo</label>
-            </div>
-            <div class="input-field col s12 m6">
-                <i class="material-icons prefix ">person_pin</i>
-                <input id="txtDui" type="text" name="txtDui" autocomplete="off" class="validate" required />
-                <label for="alias">Dui</label>
-            </div>
-            <div class="input-field col s12 m6">
-                <i class="material-icons prefix ">person_pin</i>
-                <input id="txtTelefono" type="text" name="txtTelefono" autocomplete="off" class="validate" required />
-                <label for="alias">Telefono</label>
-            </div>
-            <div class="input-field col s12 m6">
-                <i class="material-icons prefix">security</i>
-                <input id="txtClave1" type="password" name="txtClave1" autocomplete="off" class="validate" required />
-                <label for="clave1">Clave</label>
-            </div>
-            <div class="input-field col s12 m6">
-                <i class="material-icons prefix">security</i>
-                <input id="txtClave2" type="password" name="txtClave2" autocomplete="off" class="validate" required />
-                <label for="clave2">Confirmar clave</label>
-            </div>
+
+<section class="text-center text-lg-start">
+  <div class="container py-4">
+    <div class="row g-0 align-items-center">
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <div class="card cascading-right" style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px);">
+          <div class="card-body p-5 shadow-5 text-center">
+            <h2 class="fw-bold mb-5">Registro de usuarios</h2>
+
+            <form method="post" id="register-form">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label" for="form3Example1">Usuario</label>
+                        <input type="text" id="txtAlias" name="txtAlias" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label" for="form3Example1">DUI</label>
+                        <input type="text" id="txtDui" name="txtDui" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-4">      
+                        <label class="form-label" for="form3Example2">Correo electronico</label>
+                        <input type="email" id="txtCorreo" name="txtCorreo" class="form-control" /> 
+                    </div>
+
+                    <div class="col-md-6 mb-4">      
+                        <label class="form-label" for="form3Example2">Telefono</label>
+                        <input type="text" id="txtTelefono" name="txtTelefono" class="form-control" /> 
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label" for="form3Example1">Contraseña</label>
+                        <input type="password" id="txtClave1" name="txtClave1" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-4">      
+                        <label class="form-label" for="form3Example2">Confirmar contraseña</label>
+                        <input type="password" id="txtClave2" name="txtClave2" class="form-control" /> 
+                    </div>
+
+                </div>
+            </form><br>
+                <button type="submit" onclick="registrarUsuario()" class="btn btn-dark botonLogin btn-block mb-4"> Registrarse </button>
+          </div>
         </div>
-        <div class="row">
-            <div class="col l7 m7 push-m5 push-l5 s7 push-s3">
-                <button type="submit" class="button2"><i class="material-icons">add</i>Registrarse en
-                    GameBridge</button>
-            </div>
-        </div>
-    </form>
-    <?php
+      </div>
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <img src="https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg" class="w-100 rounded-4 shadow-4" alt=""/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<?php
 // Se imprime la plantilla del pie enviando el nombre del controlador para la página web.
-Dashboard_Page::footerTemplate('register.js');
+Dashboard_Page::footerLogin('register.js');
 ?>

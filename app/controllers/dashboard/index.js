@@ -3,10 +3,6 @@ const API_USUARIOS = '../../app/api/dashboard/usuarios.php?action=';
 
 // Método manejador de eventos que se ejecuta cuando el documento ha cargado.
 document.addEventListener('DOMContentLoaded', function () {
-    // Se inicializa el componente Tooltip asignado al botón del formulario para que funcione la sugerencia textual.
-    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
-
-    // Petición para verificar si existen usuarios.
     fetch(API_USUARIOS + 'readAll', {
         method: 'get'
     }).then(function (request) {
@@ -25,13 +21,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }).catch(function (error) {
         console.log(error);
     }); 
+
 });
 
-// Método manejador de eventos que se ejecuta cuando se envía el formulario de iniciar sesión.
-document.getElementById('session-form').addEventListener('submit', function (event) {
-    // Se evita recargar la página web después de enviar el formulario.
-    event.preventDefault();
-    // Realizamos una peticion a la API indicando el caso a utilizar y enviando la direccion de la API como parametro
+function iniciarSesion(){
     fetch(API_USUARIOS + 'logIn', {
         method: 'post',
         body: new FormData(document.getElementById('session-form'))
@@ -41,7 +34,9 @@ document.getElementById('session-form').addEventListener('submit', function (eve
             request.json().then(function (response) {
                 // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
                 if (response.status) {
-                    sweetAlert(4, response.message, 'main.php');
+                    sweetAlert(1, response.message, 'main.php');
+                } else {
+                    sweetAlert(2, response.exception, null);
                 }
             });
         } else {
@@ -50,6 +45,4 @@ document.getElementById('session-form').addEventListener('submit', function (eve
     }).catch(function (error) {
         console.log(error);
     });
-});
-
-
+}
