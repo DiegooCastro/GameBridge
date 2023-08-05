@@ -4,41 +4,52 @@ require_once('../../app/helpers/public_page.php');
 // Se imprime la plantilla del encabezado enviando el título de la página web.
 Public_Page::headerTemplate('Gamebridge | Inicio sesión','Iniciar sesión');
 ?>
-
-<section>
+<link type="text/css" rel="stylesheet" href="../../resources/css/login_styles.css" />
+<section class="h-100 gradient-form" style="background-color: #eee;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col col-xl-10">
-        <div class="card" style="border-radius: 1rem;">
+      <div class="col-xl-12">
+        <div class="card rounded-3 text-black">
           <div class="row g-0">
-            <div class="col-md-6 col-lg-5 d-none d-md-block">
-              <img src="../../resources/img/equis.png"
-                alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
-            </div>
-            <div class="col-md-6 col-lg-7 d-flex align-items-center">
-              <div class="card-body p-4 p-lg-5 text-black">
+            <div class="col-lg-6">
+              <div class="card-body p-md-5 mx-md-4">
+
+                <div class="text-center">
+                  <h3 class="mt-1 mb-5 pb-1">Inicio de sesión</h3>
+                </div>
+
                 <form method="post" id="session-form">
-                    <div class="d-flex align-items-center mb-3 pb-1">
-                        <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
-                        <span class="h1 fw-bold mb-0">Login</span>
-                    </div>
-                    <h4 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Inicio de sesión</h4>
-                    <div class="form-outline mb-4">
-                        <label class="form-label" for="form2Example17">Correo electronico</label>  
-                        <input type="email" id="usuario" name="usuario" class="form-control form-control-lg" /> 
-                    </div>
-                    <div class="form-outline mb-4">
-                        <label class="form-label" for="form2Example27">Contraseña</label>
-                        <input type="password" id="clave" name="clave" class="form-control form-control-lg" />
-                    </div>
-                    <div class="pt-1 mb-4">
-                        <center><button onclick="iniciarSesion()" class="btn btn-dark btn-lg btn-block botonLogin" type="button">Iniciar sesión</button></center><br>
-                    </div>
-                    <a class="small text-muted" href="#!">Olvidaste tu contraseña?</a>
-                    <p class="mb-5 pb-lg-2" style="color: #393f81;">No tienes una cuenta? 
-                        <a href="register.php" style="color: #393f81;">Registrate aqui</a>
-                    </p>    
-                </form>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form2Example11">Usuario</label>
+                    <input type="email" id="usuario" name="usuario" class="form-control" placeholder="Ingrese su correo electronico" />
+
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form2Example22">Contraseña</label>
+                    <input type="password" id="clave" name="clave" class="form-control" placeholder="Ingrese su contraseña" />
+
+                  </div>
+
+                </form><br>
+
+                <div class="text-center">
+                <center><button onclick="iniciarSesion()" class="btn btn-dark btn-lg btn-block botonLogin" type="button">Iniciar sesión</button></center><br>
+                </div>
+
+                <div class="align-items-center justify-content-center">
+                  <center><a class="text-muted" href="register.php">No tienes una cuenta?</a></center>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+              <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                <h4 class="mb-4">We are more than just a company</h4>
+                <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
               </div>
             </div>
           </div>

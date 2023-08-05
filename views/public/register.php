@@ -4,17 +4,18 @@ require_once('../../app/helpers/public_page.php');
 // Se imprime la plantilla del encabezado enviando el título de la página web.
 Public_Page::headerTemplate('Gamebridge | Registro','Iniciar sesión');
 ?>
-  <br><br>
-  <div class="container-fluid py-5 h-100">
-    <div class="row justify-content-center align-items-center h-100">
-      <div class="col-12 col-lg-9 col-xl-7">
-        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
-          <div class="card-body p-4 p-md-5">
 
-            <center><h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registro de clientes</h3></center>
+<section class="text-center text-lg-start">
+  <div class="container py-4">
+    <div class="row g-0 align-items-center">
+      <div class="col-lg-7 mb-7 mb-lg-0">
+        <div class="card cascading-right" style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px);">
+          <div class="card-body p-5 shadow-5 text-center">
+            <h2 class="fw-bold mb-5">Registro de clientes</h2>
+
             <form method="post" id="register-form">
 
-              <div class="row">
+            <div class="row">
                 <div class="col-md-6 mb-4">
                   <div class="form-outline">
                     <label class="form-label" for="firstName">Nombre</label>
@@ -51,17 +52,19 @@ Public_Page::headerTemplate('Gamebridge | Registro','Iniciar sesión');
                     <input type="password" id="clave2" name="clave2" class="form-control form-control-lg" />
                   </div>
                 </div>
-              </div>
-              <div class="mt-4 pt-2">
-                <center><button onclick="registrarCliente()" class="btn btn-dark btn-lg btn-block botonRegister" type="button">Registrarse</button></center>
-              </div>
-            </form>
+              </div>    
+
+            </form><br>
+            <center><button onclick="registrarCliente()" class="btn btn-dark btn-lg btn-block botonRegister" type="button">Registrarse</button></center>
           </div>
         </div>
       </div>
+      <div class="col-lg-5 mb-5 mb-lg-0">
+        <img src="https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg" class="w-95 rounded-4 shadow-4" alt=""/>
+      </div>
     </div>
   </div>
-
+</section>
 
 <?php
 // Se imprime la plantilla del pie enviando el nombre del controlador para la página web.

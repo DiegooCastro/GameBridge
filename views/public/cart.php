@@ -6,7 +6,7 @@ Public_Page::headerTemplate('GameBridge | Carrito',null);
 ?>
 
 <!-- Contenedor para mostrar el detalle del carrito de compras -->
-<div class="container">
+<div class="container"><br><br>
     <!-- Título del contenido principal -->
     <br>
     <h3 class="textCenter">Carrito de compras</h3>

@@ -57,7 +57,7 @@ class Public_Page
                 header('location: index.php');
             }
         } else {
-            if ($filename != 'cart.php') {
+            if ($filename != 'cart.php' && $filename != 'register.php' && $filename != 'signin.php') {
                 print('
                 <body>
                     <header id="header" class="d-flex align-items-center">
@@ -69,33 +69,20 @@ class Public_Page
                             <ul>
                                 <li><a class="nav-link scrollto " href="index.php">Inicio</a></li>
                                 <li><a class="nav-link scrollto " href="catalogos.php">Catalogo</a></li>
-                ');
-                if ($filename == 'signin.php') {
-                    print('</ul>
-                            <i class="bi bi-list mobile-nav-toggle"></i>
-                            </nav>
-                        </div>
-                    </header>');
-                } else if ($filename == 'register.php') {
-                    print(' <li><a class="nav-link scrollto" href="signin.php">Iniciar Sesión</a></li>     
-                            </ul>
-                            <i class="bi bi-list mobile-nav-toggle"></i>
-                            </nav>
-                        </div>
-                    </header>');
-                } else { 
-                    print(' <li><a class="nav-link scrollto" href="register.php">Crear Cuenta</a></li>
+                                <li><a class="nav-link scrollto" href="register.php">Crear Cuenta</a></li>
                             <li><a class="nav-link scrollto" href="signin.php">Iniciar Sesión</a></li>     
                             </ul>
                             <i class="bi bi-list mobile-nav-toggle"></i>
                             </nav>
                         </div>
-                    </header>');
-                }
+                    </header>
+                ');
             } else {
-                header('location: login.php');
+                if($filename == 'cart.php'){
+                    header('location: index.php');
+                }
             }
-        } if ($filename != 'index.php' && $filename != 'carrito.php' && $filename != 'signin.php' && $filename != 'register.php') {
+        } if ($filename != 'index.php' && $filename != 'cart.php' && $filename != 'signin.php' && $filename != 'register.php') {
             print('
             <section id="breadcrumbs" class="breadcrumbs">
                 <div class="container">
@@ -114,7 +101,7 @@ class Public_Page
     public static function footerTemplate($controller)
     {
         $filename = basename($_SERVER['PHP_SELF']);
-        if ($filename != 'carrito.php' && $filename != 'signin.php' && $filename != 'register.php') {
+        if ($filename != 'cart.php' && $filename != 'signin.php' && $filename != 'register.php') {
             print('
             <footer id="footer">
                 <div class="container footer-bottom clearfix">

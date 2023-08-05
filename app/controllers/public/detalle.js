@@ -45,10 +45,7 @@ function readOneProducto(id) {
                     subtitulo.innerText = "Categoría: " + response.dataset.categoria;
 
                     const seccion = document.getElementById("seccion_cantidad");
-                    seccion.innerHTML = `<i class="material-icons prefix">list</i>
-                    <input type="number" id="cantidad_producto" name="cantidad_producto" min="1" max="${response.dataset.cantidad}" class="validate" required/>
-                    <label for="cantidad_producto">Cantidad</label>`;
-                    
+                    seccion.innerHTML = `<input type="number" id="cantidad_producto" name="cantidad_producto" min="1" max="${response.dataset.cantidad}" class="validate anchoDetail" required/>`;
 
                 } else {
 
