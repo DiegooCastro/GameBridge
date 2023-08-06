@@ -39,7 +39,7 @@ Public_Page::headerTemplate('Gamebridge | Categorías', 'Detalle de producto');
               <div id="seccion_cantidad" class="input-field col-sm-12 col-md-3 espacioDetalle">
               </div>
               <div class="input-field col-sm-12 col-md-6">
-                <button type="button" class="btn btn-dark">Agregar al carrito <i class="bi bi-cart-fill"></i> </button>
+                <button type="button" class="btn btn-dark" onclick="agregarProducto()">Agregar al carrito <i class="bi bi-cart-fill"></i> </button>
               </div>
             </div><br>
           </form>

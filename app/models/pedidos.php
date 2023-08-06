@@ -162,10 +162,12 @@ class Pedidos extends Validator
     {
         // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
         $sql = 'SELECT iddetallefactura, p.producto, 
-        d.preciounitario, d.cantidad,p.imagen
+        d.preciounitario, d.cantidad,p.imagen,c.categoria,m.marca
         FROM facturas f
         INNER JOIN detallepedidos d ON d.pedido = f.idfactura 
         INNER JOIN productos p ON p.idproducto = d.producto
+		INNER JOIN categorias c ON c.idcategoria = p.categoria
+		INNER JOIN marcas m ON m.idmarca = p.marca
         WHERE idfactura = ?';
         // Cargamos los parametros en un arreglo
         $params = array($this->id_pedido);

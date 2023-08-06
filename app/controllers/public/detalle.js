@@ -65,7 +65,7 @@ function readOneProducto(id) {
 }
 
 // Método manejador de eventos que se ejecuta cuando se envía el formulario de agregar un producto al carrito.
-document.getElementById('shopping-form').addEventListener('submit', function (event) {
+/*document.getElementById('shopping-form').addEventListener('submit', function (event) {
     // Se evita recargar la página web después de enviar el formulario.
     event.preventDefault();
 
@@ -94,4 +94,35 @@ document.getElementById('shopping-form').addEventListener('submit', function (ev
     }).catch(function (error) {
         console.log(error);
     });
-});
+});*/
+
+function agregarProducto(){
+    // Se evita recargar la página web después de enviar el formulario.
+    event.preventDefault();
+
+    fetch(API_PEDIDOS + 'createDetail', {
+        method: 'post',
+        body: new FormData(document.getElementById('shopping-form'))
+    }).then(function (request) {
+        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+        if (request.ok) {
+            request.json().then(function (response) {
+                // Se comprueba si la respuesta es satisfactoria, de lo contrario se constata si el cliente ha iniciado sesión.
+                if (response.status) {
+                    sweetAlert(1, response.message, 'cart.php');
+                } else {
+                    // Se verifica si el cliente ha iniciado sesión para mostrar la excepción, de lo contrario se direcciona para que se autentique. 
+                    if (response.session) {
+                        sweetAlert(2, response.exception, null);
+                    } else {
+                        sweetAlert(3, response.exception, 'signin.php');
+                    }
+                }
+            });
+        } else {
+            console.log(request.status + ' ' + request.statusText);
+        }
+    }).catch(function (error) {
+        console.log(error);
+    });
+}

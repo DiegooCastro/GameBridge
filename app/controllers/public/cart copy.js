@@ -21,64 +21,41 @@ function readOrderDetail() {
                     let content = '';
                     // Se declara e inicializa una variable para calcular el importe por cada producto.
                     let subtotal = 0;
-                    // Se declara e inicializa una variable para guardar el numero de productos 
-                    let numero_productos = 0;
                     // Se declara e inicializa una variable para ir sumando cada subtotal y obtener el monto final a pagar.
                     let total = 0;
                     // Se recorre el conjunto de registros (dataset) fila por fila a través del objeto row.
                     response.dataset.map(function (row) {
                         subtotal = row.preciounitario * row.cantidad;
                         total += subtotal;
-                        numero_productos = numero_productos + 1;
                         // Se crean y concatenan las filas de la tabla con los datos de cada registro.
                         content += `
-                        <!-- Cart Item-->
-                        <div class="cart-item d-md-flex justify-content-between"><span class="remove-item"><i class="fa fa-times" onclick="openDeleteDialog(${row.iddetallefactura})"></i></span>
-                            <div class="px-3 my-3">
-                                <a class="cart-item-product" href="#">
-                                    <div class="cart-item-product-thumb"><img src="../../resources/img/productos/${row.imagen}" class="materialboxed" height="100"></div>
-                                    <div class="cart-item-product-info">
-                                        <h3 class="cart-item-product-title">${row.producto}</h3>
-                                        <h6 style="color: black"><b>Categoria:</b> ${row.categoria}</h6>
-                                        <h6 style="color: black"><b>Marca:</b> ${row.marca}</h6>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="px-3 my-3 text-center">
-                                <div class="cart-item-label">Cantidad</div>
-                                <div class="count-input">
-                                    <select class="form-control">
-                                        <option selected>${row.cantidad}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="px-3 my-3 text-center">
-                                <div class="cart-item-label">Precio Unitario</div><span class="text-xl font-weight-medium">${row.preciounitario}</span>
-                            </div>
-                            <div class="px-2 my-3 text-center">
-                                <div class="cart-item-label">Subtotal</div><span class="text-xl font-weight-medium">${subtotal.toFixed(2)}</span>
-                            </div>
-                            <div class="px-2 my-3 text-center">
-                                <div class="cart-item-label">Acciones</div><span class="text-xl font-weight-medium">
-                                        <button type="button" onclick="openUpdateDialog(${row.iddetallefactura}, ${row.cantidad})" class="btn btn-danger">
-                                            <i class="bi bi-pencil-fill"></i>
+                            <tr>
+                                <td><img src="../../resources/img/productos/${row.imagen}" class="materialboxed" height="100"></td>
+                                <td><p class="tableText"> ${row.producto} </p></td>
+                                
+                                <td><p class="tableText"> $${row.preciounitario} </p></td>
+                                <td><p class="tableText"> ${row.cantidad} </p></td>
+                                <td><p class="tableText"> $${subtotal.toFixed(2)} </p></td>
+                                <td>
+                                    <p class="tableActions">
+                                        <button type="button" onclick="openUpdateDialog(${row.iddetallefactura}, ${row.cantidad})" class="btn btn-primary">
+                                            <i class="bi bi-plus-slash-minus"></i>
                                         </button>
-                                </span>
-                            </div>
-                        </div>
+
+                                        <button type="button" onclick="openDeleteDialog(${row.iddetallefactura})" class="btn btn-danger">
+                                            <i class="bi bi-cart-x-fill"></i>
+                                        </button>
+                                    </p>
+                                </td>
+                            </tr>
                         `;
                     });
                     // Se agregan las filas al cuerpo de la tabla mediante su id para mostrar los registros.
-                    document.getElementById('detalle').innerHTML = content;
+                    document.getElementById('tbody-rows').innerHTML = content;
                     // Se muestra el total a pagar con dos decimales.
                     document.getElementById('pago').textContent = total.toFixed(2);
-
-                    if (numero_productos == 1) {
-                        document.getElementById('numeroProductos').textContent = `Tienes un producto en tu carrito`;
-                    } else{
-                        document.getElementById('numeroProductos').textContent = `Tienes ${numero_productos} productos en tu carrito`;
-                    }
-                    
+                    // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.
+                    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
                 } else {
                     sweetAlert(4, response.exception, 'index.php');
                 }
@@ -91,39 +68,16 @@ function readOrderDetail() {
     });
 }
 
-
 // Función para abrir una caja de dialogo (modal) con el formulario de cambiar cantidad de producto.
 function openUpdateDialog(id, quantity) {
-
-    const data = new FormData();
-    data.append('id_detalle', id);
-    data.append('cantidad_producto', quantity);
-
-    fetch(API_PEDIDOS + 'updateDetail', {
-        method: 'post',
-        body: data
-    }).then(function (request) {
-        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
-        if (request.ok) {
-            request.json().then(function (response) {
-                // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-                if (response.status) {
-                    // Se actualiza la tabla en la vista para mostrar el cambio de la cantidad de producto.
-                    readOrderDetail();
-                    sweetAlert(1, response.message, null);
-                } else {
-                    sweetAlert(2, response.exception, null);
-                }
-            });
-        } else {
-            console.log(request.status + ' ' + request.statusText);
-        }
-    }).catch(function (error) {
-        console.log(error);
-    });
-
-
-
+    // Se abre la caja de dialogo (modal) que contiene el formulario.
+    let instance = M.Modal.getInstance(document.getElementById('item-modal'));
+    instance.open();
+    // Se inicializan los campos del formulario con los datos del registro seleccionado.
+    document.getElementById('id_detalle').value = id;
+    document.getElementById('cantidad_producto').value = quantity;
+    // Se actualizan los campos para que las etiquetas (labels) no queden sobre los datos.
+    M.updateTextFields();
 }
 
 // Método manejador de eventos que se ejecuta cuando se envía el formulario de cambiar cantidad de producto.
@@ -142,6 +96,9 @@ document.getElementById('item-form').addEventListener('submit', function (event)
                 if (response.status) {
                     // Se actualiza la tabla en la vista para mostrar el cambio de la cantidad de producto.
                     readOrderDetail();
+                    // Se cierra la caja de dialogo (modal) del formulario.
+                    let instance = M.Modal.getInstance(document.getElementById('item-modal'));
+                    instance.close();
                     sweetAlert(1, response.message, null);
                 } else {
                     sweetAlert(2, response.exception, null);
