@@ -485,7 +485,7 @@ Public_Page::headerTemplate('GameBridge | Carrito', null);
     }
 </style>
 
-<center><br><br><br>
+<center><br><br>
     <h2>Carrito de compras</h2>
     <p id="numeroProductos">Tienes x productos en tu carrito</p><br>
 </center>

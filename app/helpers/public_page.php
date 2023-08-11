@@ -43,9 +43,10 @@ class Public_Page
                             </div>
                             <nav id="navbar" class="navbar">
                             <ul>
-                                <li><a class="nav-link scrollto " href="index.php">Inicio</a></li>
-                                <li><a class="nav-link scrollto " href="catalogos.php">Catalogo</a></li>
+                                <li><a class="nav-link scrollto" href="index.php">Inicio</a></li>
+                                <li><a class="nav-link scrollto" href="catalogos.php">Catalogo</a></li>
                                 <li><a class="nav-link scrollto" href="cart.php">Carrito</a></li>
+                                <li><a class="nav-link scrollto" href="historial.php">Historial</a></li>
                                 <li><a class="nav-link scrollto" onclick="logOut()"> Usuario: '.$_SESSION['correo_cliente'].'</a></li>
                             </ul>
                             <i class="bi bi-list mobile-nav-toggle"></i>
@@ -82,7 +83,7 @@ class Public_Page
                     header('location: index.php');
                 }
             }
-        } if ($filename != 'index.php' && $filename != 'cart.php' && $filename != 'signin.php' && $filename != 'register.php') {
+        } if ($filename != 'index.php' && $filename != 'cart.php' && $filename != 'signin.php' && $filename != 'register.php' && $filename != 'historial.php') {
             print('
             <section id="breadcrumbs" class="breadcrumbs">
                 <div class="container">

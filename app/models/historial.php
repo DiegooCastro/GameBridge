@@ -9,7 +9,6 @@ class Categorias extends Validator
     private $detalle = null;
     private $calificacion = null;
     private $comentario = null;
-    private $estado = null;
 
 
     // Métodos para asignar el valor a los atributos
