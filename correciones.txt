@@ -1,7 +1,0 @@
-Hay modelos que poseen una sola funcion y pueden ser implementadas dentro de otra clase
-
-Hay clases que no se estan utilizando 
-
-Agregar el historial de compras dentro del sistema 
-
-Aprender a abrir Modals con Boostrap 5.0 desde Javascript 

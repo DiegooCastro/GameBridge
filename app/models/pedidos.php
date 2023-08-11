@@ -174,6 +174,33 @@ class Pedidos extends Validator
         return Database::getRows($sql,$params);
     }
 
+    public function readHistorial($id_cliente)
+    {
+        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
+        $sql = 'SELECT f.idfactura, f.fecha,e.estadofactura as estado, COALESCE(calcularTotal(idfactura),CAST(0 as money)) as total
+        FROM facturas f 
+        INNER JOIN estadofactura e on f.estado = e.idestado
+        WHERE f.cliente = ?
+        ORDER BY idfactura DESC';
+        // Cargamos los parametros en un arreglo
+        $params = array($id_cliente);
+        return Database::getRows($sql,$params);
+    }
+
+    public function readDetailHistorial($id_pedido)
+    {
+        // Creamos la sentencia SQL que contiene la consulta que mandaremos a la base
+        $sql = 'SELECT iddetallefactura, pedido, p.producto,m.marca, preciounitario, d.cantidad, (preciounitario*d.cantidad) as subtotal ,p.imagen
+        FROM detallepedidos d
+        INNER JOIN productos p ON d.producto = p.idproducto
+        INNER JOIN marcas m ON m.idmarca = p.marca
+        WHERE pedido = ?
+        ORDER BY (preciounitario*d.cantidad) desc';
+        // Cargamos los parametros en un arreglo
+        $params = array($id_pedido);
+        return Database::getRows($sql,$params);
+    }
+
     // Método para finalizar un pedido por parte del cliente.
     public function finishOrder()
     {

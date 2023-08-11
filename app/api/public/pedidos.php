@@ -53,6 +53,28 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Debe agregar un producto al carrito';
                 }
                 break;
+            case 'readHistorial':
+                if ($result['dataset'] = $pedido->readHistorial($_SESSION['id_cliente'])) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'No tiene productos en el carrito';
+                    }
+                }
+                break;
+                case 'readDetailHistorial':
+                    if ($result['dataset'] = $pedido->readDetailHistorial($_POST['id_pedido'])) {
+                        $result['status'] = 1;
+                    } else {
+                        if (Database::getException()) {
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['exception'] = 'El pedido no tiene productos';
+                        }
+                    }
+                    break;
             case 'updateDetail':
                 $_POST = $pedido->validateForm($_POST);
                 if ($pedido->setIdDetalle($_POST['id_detalle'])) {

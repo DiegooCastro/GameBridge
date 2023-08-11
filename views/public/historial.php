@@ -9,14 +9,11 @@ Public_Page::headerTemplate('GameBridge | Historial de compras', null);
     .centrar {
         align-items: center;
         text-align: center;
-        align-self: center;
-        align-content: center;
-        place-items: center;
-        justify-content: center;
         padding-top: 45px;
         padding-bottom: 35px;
         font-size: 35px;
     }
+
 </style>
 
 <div class="container">
@@ -32,24 +29,24 @@ Public_Page::headerTemplate('GameBridge | Historial de compras', null);
                 <th scope="col">Detalle pedido</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tb-rows">
+            
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead class="table-dark">
             <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <th scope="col">Imagen</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Precio unitario</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Subtotal</th>
             </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-            </tr>
+        </thead>
+        <tbody id="tb-rows2">
+            
         </tbody>
     </table>
 </div>
@@ -57,5 +54,5 @@ Public_Page::headerTemplate('GameBridge | Historial de compras', null);
 
 <?php
 // Se imprime la plantilla del pie enviando el nombre del controlador para la página web.
-Public_Page::footerTemplate('index.js');
+Public_Page::footerTemplate('historial.js');
 ?>
