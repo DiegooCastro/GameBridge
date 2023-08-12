@@ -91,13 +91,23 @@ function readOrderDetail() {
     });
 }
 
-
-// Función para abrir una caja de dialogo (modal) con el formulario de cambiar cantidad de producto.
 function openUpdateDialog(id, quantity) {
 
+    // Abrir el modal utilizando JQuery
+    $('#exampleModal').modal('show');
+
+    document.getElementById('id_detalle').value = id;
+    document.getElementById('cantidad').value = quantity;
+}
+
+// Función para abrir una caja de dialogo (modal) con el formulario de cambiar cantidad de producto.
+function updateQuantity() {
+    let id_detalle = document.getElementById('id_detalle').value;
+    let cantidad = document.getElementById('cantidad').value;
+
     const data = new FormData();
-    data.append('id_detalle', id);
-    data.append('cantidad_producto', quantity);
+    data.append('id_detalle', id_detalle);
+    data.append('cantidad_producto', cantidad);
 
     fetch(API_PEDIDOS + 'updateDetail', {
         method: 'post',
@@ -121,39 +131,7 @@ function openUpdateDialog(id, quantity) {
     }).catch(function (error) {
         console.log(error);
     });
-
-
-
 }
-
-// Método manejador de eventos que se ejecuta cuando se envía el formulario de cambiar cantidad de producto.
-document.getElementById('item-form').addEventListener('submit', function (event) {
-    // Se evita recargar la página web después de enviar el formulario.
-    event.preventDefault();
-
-    fetch(API_PEDIDOS + 'updateDetail', {
-        method: 'post',
-        body: new FormData(document.getElementById('item-form'))
-    }).then(function (request) {
-        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
-        if (request.ok) {
-            request.json().then(function (response) {
-                // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-                if (response.status) {
-                    // Se actualiza la tabla en la vista para mostrar el cambio de la cantidad de producto.
-                    readOrderDetail();
-                    sweetAlert(1, response.message, null);
-                } else {
-                    sweetAlert(2, response.exception, null);
-                }
-            });
-        } else {
-            console.log(request.status + ' ' + request.statusText);
-        }
-    }).catch(function (error) {
-        console.log(error);
-    });
-});
 
 // Función para mostrar un mensaje de confirmación al momento de finalizar el pedido.
 function finishOrder() {

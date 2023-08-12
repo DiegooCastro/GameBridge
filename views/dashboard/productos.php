@@ -2,7 +2,7 @@
 // Se incluye la clase con las plantillas del documento.
 require_once('../../app/helpers/dashboard_page.php');
 // Se imprime la plantilla del encabezado enviando el título de la página web.
-Dashboard_Page::headerTemplate2('Administrar productos','Productos');
+Dashboard_Page::headerTemplate('Administrar productos','Productos');
 ?>
 <section class="inner-page">
       <div class="container">
@@ -118,5 +118,5 @@ Dashboard_Page::headerTemplate2('Administrar productos','Productos');
   </main>
   <?php
     // Se imprime la plantilla del pie enviando el nombre del controlador para la página web.
-    Dashboard_Page::footerTemplate2('productos.js');
+    Dashboard_Page::footerTemplate('productos.js');
   ?>

@@ -50,53 +50,44 @@ function readOrderDetail() {
     });
 }
 
-
 // Función para abrir una caja de dialogo (modal) con el formulario de cambiar cantidad de producto.
-function openDetail(id) {
-
+function openDetail(id,total) {
     const data = new FormData();
     data.append('id_pedido', id);
-
     fetch(API_PEDIDOS + 'readDetailHistorial', {
         method: 'post',
         body: data
     }).then(function (request) {
-
         if (request.ok) {
             request.json().then(function (response) {
-                
                 if (response.status) {
-
                     // Se declara e inicializa una variable para concatenar las filas de la tabla en la vista.
                     let content = '';
-                    
                     // Se recorre el conjunto de registros (dataset) fila por fila a través del objeto row.
                     response.dataset.map(function (row) {
-                
                         // Se crean y concatenan las filas de la tabla con los datos de cada registro.
                         content += `
                         <tr>
                             <td><img src="../../resources/img/productos/${row.imagen}" class="materialboxed" height="100"></td>
                             <td>${row.producto}</td>
                             <td>${row.marca}</td>
-                            <td>${row.preciounitario}</td>
+                            <td>$${row.preciounitario}</td>
                             <td>${row.cantidad}</td>
-                            <td>${row.subtotal}</td>
+                            <td>$${row.subtotal}</td>
                         </tr>     
-                        `;
-
+                         `;
                     });
                     // Se agregan las filas al cuerpo de la tabla mediante su id para mostrar los registros.
-                    document.getElementById('tb-rows2').innerHTML = content;                                      
+                    document.getElementById('tb-rows2').innerHTML = content;  
+                    // Abrir el modal utilizando JQuery
+                    $('#exampleModal').modal('show');                                    
                 } else {
                     sweetAlert(4, response.exception, 'index.php');
                 }
-
             });
         } else {
             console.log(request.status + ' ' + request.statusText);
         }
-
     }).catch(function (error) {
         console.log(error);
     });

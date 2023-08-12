@@ -137,7 +137,7 @@ class Public_Page
                     <script type="text/javascript" src="../../app/helpers/components.js"></script>
                     <script type="text/javascript" src="../../app/controllers/public/account.js"></script> 
                     <script type="text/javascript" src="../../app/controllers/public/' . $controller . '"></script>
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
                 </body>
             </html>
         ');

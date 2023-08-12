@@ -14,6 +14,14 @@ Public_Page::headerTemplate('GameBridge | Historial de compras', null);
         font-size: 35px;
     }
 
+    .anchoModal{
+        width: 900px;
+    }
+
+    .espacioModal{
+        padding-top: 30px;
+        padding-bottom: 40px;
+    }
 </style>
 
 <div class="container">
@@ -30,27 +38,42 @@ Public_Page::headerTemplate('GameBridge | Historial de compras', null);
             </tr>
         </thead>
         <tbody id="tb-rows">
-            
-        </tbody>
-    </table>
 
-    <table class="table">
-        <thead class="table-dark">
-            <tr>
-                <th scope="col">Imagen</th>
-                <th scope="col">Producto</th>
-                <th scope="col">Marca</th>
-                <th scope="col">Precio unitario</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Subtotal</th>
-            </tr>
-        </thead>
-        <tbody id="tb-rows2">
-            
         </tbody>
     </table>
 </div>
 
+<!-- Modal -->
+<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content anchoModal">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Detalle de compra</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body espacioModal">
+                <table class="table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Imagen</th>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Marca</th>
+                            <th scope="col">Precio unitario</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tb-rows2">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar ventana</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php
 // Se imprime la plantilla del pie enviando el nombre del controlador para la página web.

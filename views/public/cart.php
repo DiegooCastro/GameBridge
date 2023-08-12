@@ -507,6 +507,30 @@ Public_Page::headerTemplate('GameBridge | Carrito', null);
     </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Modificar cantidad</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <input id="id_detalle" type="text" class="form-control" style="display:none" placeholder="id_detalle" aria-label="id_detalle" aria-describedby="basic-addon1">
+
+                <h6>Cantidad:</h6>
+                <input id="cantidad" type="number" class="form-control" placeholder="Cantidad" aria-label="Cantidad" aria-describedby="basic-addon1">            
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="updateQuantity()" class="btn btn-dark" data-bs-dismiss="modal">Actualizar cantidad</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar ventana</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Componente Modal para mostrar una caja de dialogo -->
 <div id="item-modal" class="modal">
     <div class="modal-content">

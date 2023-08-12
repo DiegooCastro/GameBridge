@@ -36,7 +36,7 @@ class Dashboard_Page
         print('
         </main>
         <footer>
-        <script type="text/javascript" src="../../resources/js/bootstrap.bundle.min.js"></script>
+                <script type="text/javascript" src="../../resources/js/bootstrap.bundle.min.js"></script>
                 <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
                 <script type="text/javascript" src="../../app/helpers/components.js"></script>
                 <script type="text/javascript" src="../../app/controllers/dashboard/' . $controller . '"></script>
@@ -63,7 +63,6 @@ class Dashboard_Page
                 <meta content="" name="keywords">
                 <link type="image/png" rel="icon" href="../../resources/img/icono.png"/> 
                 <link type="text/css" rel="stylesheet" href="../../resources/css/dashboard_styles.css" />
-                <link type="text/css" rel="stylesheet" href="../../resources/css/material_icons.css" />
                 <link type="text/css" href="../../resources/css/bootstrap.min.css" rel="stylesheet">
                 <link type="text/css" href="../../resources/css/bootstrap-icons.css" rel="stylesheet">
                 <link type="text/css" href="../../resources/css/styles.css" rel="stylesheet">
