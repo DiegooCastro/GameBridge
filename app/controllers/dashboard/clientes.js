@@ -17,11 +17,11 @@ function fillTable(dataset) {
     dataset.map(function (row) {
         if(row.estado == true)
         {
-            icon = 'lock'
+            icon = 'fa fa-lock'
             accion = false;
             estado = 'Activo';
         } else {
-            icon  = 'lock_open';
+            icon  = 'fa fa-unlock-alt';
             accion = true;
             estado = 'Inactivo';
         }
@@ -35,8 +35,8 @@ function fillTable(dataset) {
                 <td>${row.dui}</td>
                 <td>${row.correo_electronico}</td>
                 <td>
-                    <a href="#" onclick="openDeleteDialog(${row.idcliente},${accion})" class="btn waves-effect waves-orange btn deleteButton tooltipped" data-tooltip="Eliminar"><i class="material-icons">${icon}</i></a>
-                    <a href="#" onclick="openUpdateModal(${row.idcliente})" class="btn waves-effect btn updateButton tooltipped" data-tooltip="Actualizar"><i class="material-icons">update</i></a>
+                <a href="#" onclick="openDeleteDialog(${row.idusuario},${accion})" class="btn waves-effect waves-orange btn deleteButton tooltipped" data-tooltip="Eliminar"><i class="${icon} fa-lg"></i></a>
+                <a href="#" onclick="openUpdateModal(${row.idusuario})" class="btn waves-effect btn updateButton tooltipped" data-tooltip="Actualizar"><i class="fa fa-refresh fa-lg" aria-hidden="true"></i></a>
                 </td>
             </tr>
         `;

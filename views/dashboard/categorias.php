@@ -2,7 +2,7 @@
 // Se incluye la clase con las plantillas del documento.
 require_once('../../app/helpers/dashboard_page.php');
 // Se imprime la plantilla del encabezado enviando el título de la página web.
-Dashboard_Page::headerTemplate2('Administrar categorias','Categorias');
+Dashboard_Page::headerTemplate('Administrar categorias','Categorias');
 ?>
     <section class="inner-page">
       <div class="container">
@@ -25,8 +25,8 @@ Dashboard_Page::headerTemplate2('Administrar categorias','Categorias');
 
                   <div class="col col-md-4 col-lg-6">
                     <div class="input-field">
-                      <button type="button" onclick="searchCategories()" class="btn waves-effect green tooltipped" data-tooltip="Buscar"><i class="material-icons">search</i></button>
-                      <a href="../../app/reports/dashboard/categorias.php" target="_blank" class="btn waves-effect amber tooltipped" data-tooltip="Reporte de usuarios por tipo"><i class="material-icons">assignment</i></a>
+                      <button type="button" onclick="searchCategories()" class="btn btn-dark" data-tooltip="Buscar"><i class="fa fa-search"></i></button>
+                      <a href="../../app/reports/dashboard/categorias.php" target="_blank" class="btn btn-dark" data-tooltip="Reporte de usuarios por tipo"><i class="fa fa-file-text" aria-hidden="true"></i></a>
                     </div>
                   </div>
 
@@ -38,7 +38,7 @@ Dashboard_Page::headerTemplate2('Administrar categorias','Categorias');
              
                 <div class="input-field">
                     <!-- Enlace para abrir la caja de dialogo (modal) al momento de crear un nuevo registro -->
-                    <button type="button" onclick="openCreateModal()" class="btn btn-secondary">Agregar categoria</button>
+                    <button type="button" onclick="openCreateModal()" class="btn btn-dark">Agregar categoria</button>
                 </div>
                 
               </div>
@@ -51,6 +51,7 @@ Dashboard_Page::headerTemplate2('Administrar categorias','Categorias');
             <tr id="tableHeader">
                 <th>Imagen</th>
                 <th>Categoría</th>
+                <th>Descripcion</th>
                 <th>Acciones</th>
             </tr>
           </thead>
@@ -101,6 +102,6 @@ Dashboard_Page::headerTemplate2('Administrar categorias','Categorias');
     </section>
 <?php
     // Se imprime la plantilla del pie enviando el nombre del controlador para la página web.
-    Dashboard_Page::footerTemplate2('categorias.js');
+    Dashboard_Page::footerTemplate('categorias.js');
 ?>
 

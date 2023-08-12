@@ -25,8 +25,8 @@ Dashboard_Page::headerTemplate('Administrar clientes','Clientes');
 
                   <div class="col col-md-4 col-lg-6">
                     <div class="input-field">
-                      <button type="button" onclick="searchUser()" class="btn waves-effect green tooltipped" data-tooltip="Buscar"><i class="material-icons">search</i></button>
-                      <a href="../../app/reports/dashboard/clientes.php" target="_blank" class="btn waves-effect amber tooltipped" data-tooltip="Reporte de usuarios por tipo"><i class="material-icons">assignment</i></a>
+                      <button type="button" onclick="searchUser()" class="btn btn-dark" data-tooltip="Buscar"><i class="fa fa-search"></i></button>
+                      <a href="../../app/reports/dashboard/clientes.php" target="_blank" class="btn btn-dark" data-tooltip="Reporte de usuarios por tipo"><i class="fa fa-file-text" aria-hidden="true"></i></a>
                     </div>
                   </div>
 
@@ -38,7 +38,7 @@ Dashboard_Page::headerTemplate('Administrar clientes','Clientes');
              
                 <div class="input-field">
                     <!-- Enlace para abrir la caja de dialogo (modal) al momento de crear un nuevo registro -->
-                    <button type="button" onclick="openCreateModal()" class="btn btn-secondary">Agregar cliente</button>
+                    <button type="button" onclick="openCreateModal()" class="btn btn-dark">Agregar cliente</button>
                 </div>
                 
               </div>

@@ -18,8 +18,9 @@ function fillTable(dataset) {
             <tr>
                 <td><img src="../../resources/img/categorias/${row.imagen}" class="materialboxed" height="100"></td>
                 <td>${row.categoria}</td>
+                <td>${row.descripcion}</td>
                 <td>
-                    <a href="#" onclick="openUpdateModal(${row.idcategoria})" class="btn waves-effect btn updateButton tooltipped" data-tooltip="Actualizar"><i class="material-icons">update</i></a>
+                    <a href="#" onclick="openUpdateModal(${row.idcategoria})" class="btn waves-effect btn updateButton tooltipped" data-tooltip="Actualizar"><i class="fa fa-refresh fa-lg" aria-hidden="true"></i></a>
                 </td>
             </tr>
         `;

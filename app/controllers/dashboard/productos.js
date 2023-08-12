@@ -18,10 +18,10 @@ function fillTable(dataset) {
     dataset.map(function (row) {
         if(row.estado == true)
         {
-            icon = 'lock'
+            icon = 'fa fa-lock'
             accion = false;
         } else {
-            icon  = 'lock_open';
+            icon  = 'fa fa-unlock-alt';
             accion = true;
         }
         // Se crean y concatenan las filas de la tabla con los datos de cada registro.
@@ -33,8 +33,8 @@ function fillTable(dataset) {
                 <td>${row.producto}</td>
                 <td>${row.precio}</td>
                 <td>
-                    <a href="#" onclick="openDeleteDialog(${row.id},${accion})" class="btn waves-effect waves-orange btn deleteButton tooltipped" data-tooltip="Eliminar"><i class="material-icons">${icon}</i></a>
-                    <a href="#" onclick="openUpdateModal(${row.id})" class="btn waves-effect btn updateButton tooltipped" data-tooltip="Actualizar"><i class="material-icons">update</i></a>
+                    <a href="#" onclick="openDeleteDialog(${row.id},${accion})" class="btn waves-effect waves-orange btn deleteButton tooltipped" data-tooltip="Eliminar"><i class="${icon} fa-lg"></i></a>
+                    <a href="#" onclick="openUpdateModal(${row.id})" class="btn waves-effect btn updateButton tooltipped" data-tooltip="Actualizar"><i class="fa fa-refresh fa-lg" aria-hidden="true"></i></a>
                 </td>
             </tr>
         `;

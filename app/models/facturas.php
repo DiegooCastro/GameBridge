@@ -59,7 +59,7 @@ class Facturas extends Validator
     //Metodo para cargar las facturas
     public function readAll()
     {
-        $sql = "SELECT f.idfactura, Concat(c.nombres,' ',c.apellidos) as cliente ,e.estadofactura
+        $sql = "SELECT f.idfactura, Concat(c.nombres,' ',c.apellidos) as cliente ,e.estadofactura, fecha
                 FROM Facturas f
                 inner join Clientes c on f.Cliente=c.IdCliente 
                 inner join EstadoFactura e on f.Estado=e.IdEstado

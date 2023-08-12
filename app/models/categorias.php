@@ -5,8 +5,8 @@
 
 class Categorias extends Validator
 {
-    private $id=null;
-    private $categoria=null;
+    private $id = null;
+    private $categoria = null;
     private $descripcion = null;
     private $imagen = null;
     private $ruta = '../../../resources/img/categorias/';
@@ -23,7 +23,7 @@ class Categorias extends Validator
 
     public function setCategoria($value)
     {
-        if ($this->validateAlphanumeric($value,1,40)) {
+        if ($this->validateAlphanumeric($value, 1, 40)) {
             $this->categoria = $value;
             return true;
         } else {
@@ -101,7 +101,7 @@ class Categorias extends Validator
     {
         $sql = 'INSERT INTO categorias(idcategoria,categoria,descripcion,imagen)
                 VALUES(default, ? , ? , ?)';
-        $params = array($this->categoria, $this->descripcion , $this->imagen);
+        $params = array($this->categoria, $this->descripcion, $this->imagen);
         return Database::executeRow($sql, $params);
     }
 

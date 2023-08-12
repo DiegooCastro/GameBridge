@@ -15,13 +15,14 @@ function fillTable(dataset) {
     dataset.map(function (row) {
         // Se crean y concatenan las filas de la tabla con los datos de cada registro.
         content += `
-            <tr>
-               
+            <tr>       
+                <td>${row.idfactura}</td>
                 <td>${row.cliente}</td>
                 <td>${row.estadofactura}</td>
+                <td>${row.fecha}</td>
                 <td>
-                    <a href="#" onclick="openUpdateDialog(${row.idfactura})" class="btn waves-effect btn updateButton tooltipped" data-tooltip="Actualizar"><i class="material-icons">update</i></a>
-                    <a href="#" onclick="openAddressDialog(${row.idfactura})" class="waves-effect btn addressButton tooltipped" data-tooltip="Ver productos""><i class="material-icons left">visibility</i></a>
+                    <a href="#" onclick="openUpdateDialog(${row.idfactura})" class="btn waves-effect btn updateButton tooltipped" data-tooltip="Actualizar"><i class="fa fa-refresh fa-lg" aria-hidden="true"></i></a>
+                    <a href="#" onclick="openAddressDialog(${row.idfactura})" class="waves-effect btn addressButton tooltipped" data-tooltip="Ver productos""><i class="fa fa-file-text fa-lg" aria-hidden="true"></i></a>
 
                 </td>
             </tr>

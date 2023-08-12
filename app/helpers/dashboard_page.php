@@ -64,24 +64,11 @@ class Dashboard_Page
                 <link type="image/png" rel="icon" href="../../resources/img/icono.png"/> 
                 <link type="text/css" rel="stylesheet" href="../../resources/css/dashboard_styles.css" />
                 <link type="text/css" href="../../resources/css/bootstrap.min.css" rel="stylesheet">
-                <link type="text/css" href="../../resources/css/bootstrap-icons.css" rel="stylesheet">
                 <link type="text/css" href="../../resources/css/styles.css" rel="stylesheet">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
                 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet"> 
             </head>
             <body>
-            <section id="topbar" class="d-flex align-items-center">
-                <div class="container d-flex justify-content-center justify-content-md-between">
-                <div class="contact-info d-flex align-items-center">
-                    <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:' . $_SESSION['correo'] . '">' . $_SESSION['correo'] . '</a></i>
-                    <i class="bi bi-phone d-flex align-items-center ms-4"><span>+503 ' . $_SESSION['telefono'] . '</span></i>
-                </div>
-                <div class="social-links d-none d-md-flex align-items-center">
-                    <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                    <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                </div>
-                </div>
-            </section>
         ');
         // Se obtiene el nombre del archivo de la página web actual.
         $filename = basename($_SERVER['PHP_SELF']);
@@ -102,7 +89,7 @@ class Dashboard_Page
                                     <li><a class="nav-link scrollto" href="categorias.php">Categorias</a></li>
                                     <li><a class="nav-link scrollto" href="productos.php">Productos</a></li>
                                     <li><a class="nav-link scrollto" href="facturas.php">Facturas</a></li>
-                                    <li><a onclick="logOut()" class="nav-link scrollto">Usuario: <b>' . $_SESSION['usuario'] . '</b><i class="bi bi-person-fill"></i></a></li>
+                                    <li><a onclick="logOut()" class="nav-link scrollto">Usuario: <b>' . $_SESSION['usuario'] . '</b><i class="fa fa-user" aria-hidden="true"></i></a></li>
                                     </ul>
                                     <i class="bi bi-list mobile-nav-toggle"></i>
                                 </nav>

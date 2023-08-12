@@ -29,24 +29,24 @@ function fillTable(dataset) {
         }
         if(row.estado == true)
         {
-            icon = 'lock'
+            icon = 'fa fa-lock'
             accion = false;
         } else {
-            icon  = 'lock_open';
+            icon  = 'fa fa-unlock-alt';
             accion = true;
         }
         // Se crean y concatenan las filas de la tabla con los datos de cada registro.
         content += `
-            <tr>
+            <tr> 
                 <td>${row.idusuario}</td>
                 <td>${row.usuario}</td>
                 <td>${row.dui}</td>
                 <td>${row.telefono}</td>
                 <td>${tipo}</td>
-                <td>${row.correo_electronico}</td>
+                <td>${row.correo_electronico}</td>                             
                 <td>
-                    <a href="#" onclick="openDeleteDialog(${row.idusuario},${accion})" class="btn waves-effect waves-orange btn deleteButton tooltipped" data-tooltip="Eliminar"><i class="material-icons">${icon}</i></a>
-                    <a href="#" onclick="openUpdateModal(${row.idusuario})" class="btn waves-effect btn updateButton tooltipped" data-tooltip="Actualizar"><i class="material-icons">update</i></a>
+                    <a href="#" onclick="openDeleteDialog(${row.idusuario},${accion})" class="btn waves-effect waves-orange btn deleteButton tooltipped" data-tooltip="Eliminar"><i class="${icon} fa-lg"></i></a>
+                    <a href="#" onclick="openUpdateModal(${row.idusuario})" class="btn waves-effect btn updateButton tooltipped" data-tooltip="Actualizar"><i class="fa fa-refresh fa-lg" aria-hidden="true"></i></a>
                 </td>
             </tr>
         `;
