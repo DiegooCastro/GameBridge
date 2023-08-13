@@ -31,7 +31,8 @@ function readOrderDetail() {
                             <td>${row.estado}</td>
                             <td>${row.total}</td>
                             <td>
-                                <a href="#" onclick="openDetail(${row.idfactura})" class="btn waves-effect btn updateButton tooltipped" data-tooltip="Actualizar"><i class="bi bi-handbag-fill"></i></a>
+                                <a href="#" onclick="openDetail(${row.idfactura})" class="btn waves-effect btn updateButton"><i class="fa fa-file-text fa-lg" aria-hidden="true"></i></a>
+                                <a onclick="openReport(${row.idfactura})" class="btn waves-effect btn updateButton"><i class="fa fa-clipboard fa-lg" aria-hidden="true"></i></a>       
                             </td>
                         </tr>     
                         `;
@@ -50,8 +51,31 @@ function readOrderDetail() {
     });
 }
 
+function openReport(idpedido){
+    const data = new FormData();
+    data.append('id_pedido',idpedido);
+    fetch(API_PEDIDOS + 'readReport', {
+        method: 'post',
+        body: data
+    }).then(function (request) {
+        if (request.ok) {
+            request.json().then(function (response) {
+                if (response.status) {
+                    window.location.href = `../../app/reports/public/comprobante.php?id=${idpedido}`;
+                } else {
+                    sweetAlert(4, response.exception, 'index.php');
+                }
+            });
+        } else {
+            console.log(request.status + ' ' + request.statusText);
+        }
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
 // Función para abrir una caja de dialogo (modal) con el formulario de cambiar cantidad de producto.
-function openDetail(id,total) {
+function openDetail(id) {
     const data = new FormData();
     data.append('id_pedido', id);
     fetch(API_PEDIDOS + 'readDetailHistorial', {

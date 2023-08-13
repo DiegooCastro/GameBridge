@@ -64,17 +64,29 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
-                case 'readDetailHistorial':
-                    if ($result['dataset'] = $pedido->readDetailHistorial($_POST['id_pedido'])) {
-                        $result['status'] = 1;
+            case 'readReport':
+                if ($result['dataset'] = $pedido->verificarPedido($_POST['id_pedido'])) {
+                    $_SESSION['id_pedido'] = $_POST['id_pedido'];
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
                     } else {
-                        if (Database::getException()) {
-                            $result['exception'] = Database::getException();
-                        } else {
-                            $result['exception'] = 'El pedido no tiene productos';
-                        }
+                        $result['exception'] = 'Error al cargar reporte';
                     }
-                    break;
+                }
+                break;
+            case 'readDetailHistorial':
+                if ($result['dataset'] = $pedido->readDetailHistorial($_POST['id_pedido'])) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'El pedido no tiene productos';
+                    }
+                }
+                break;
             case 'updateDetail':
                 $_POST = $pedido->validateForm($_POST);
                 if ($pedido->setIdDetalle($_POST['id_detalle'])) {

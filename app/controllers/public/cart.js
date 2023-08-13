@@ -53,10 +53,10 @@ function readOrderDetail() {
                                 </div>
                             </div>
                             <div class="px-3 my-3 text-center">
-                                <div class="cart-item-label">Precio Unitario</div><span class="text-xl font-weight-medium">${row.preciounitario}</span>
+                                <div class="cart-item-label">Precio Unitario</div><span class="text-xl font-weight-medium">$${row.preciounitario}</span>
                             </div>
                             <div class="px-2 my-3 text-center">
-                                <div class="cart-item-label">Subtotal</div><span class="text-xl font-weight-medium">${subtotal.toFixed(2)}</span>
+                                <div class="cart-item-label">Subtotal</div><span class="text-xl font-weight-medium">$${subtotal.toFixed(2)}</span>
                             </div>
                             <div class="px-2 my-3 text-center">
                                 <div class="cart-item-label">Acciones</div><span class="text-xl font-weight-medium">

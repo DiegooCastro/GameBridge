@@ -26,7 +26,7 @@ Dashboard_Page::headerTemplate('Administrar facturas','Facturas');
                   </div>
                   <div class="col col-md-4 col-lg-6">
                     <div class="input-field">
-                      <button type="button" onclick="searchProduct()" class="btn btn-dark" data-tooltip="Buscar"><i class="fa fa-search"></i></button>
+                      <button type="button" onclick="search()" class="btn btn-dark" data-tooltip="Buscar"><i class="fa fa-search"></i></button>
                       <a href="../../app/reports/dashboard/productos.php" target="_blank" class="btn btn-dark" data-tooltip="Reporte de usuarios por tipo"><i class="fa fa-file-text" aria-hidden="true"></i></a>
                     </div>
                   </div>

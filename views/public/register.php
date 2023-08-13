@@ -5,13 +5,22 @@ require_once('../../app/helpers/public_page.php');
 Public_Page::headerTemplate('Gamebridge | Registro','Iniciar sesión');
 ?>
 
-<section class="text-center text-lg-start">
-  <div class="container py-4">
-    <div class="row g-0 align-items-center">
+<style>
+  .espacio-register{
+    padding-top: 30px;
+  }
+
+  body{
+    background-color: #d9d4d4;
+  }
+</style>
+
+  <div class="container py-1 fondo-register">
+    <div class="row g-0 align-items-center espacio-register">
       <div class="col-lg-7 mb-7 mb-lg-0">
         <div class="card cascading-right" style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px);">
-          <div class="card-body p-5 shadow-5 text-center">
-            <h2 class="fw-bold mb-5">Registro de clientes</h2>
+          <div class="card-body p-4 shadow-5 ">
+            <h2 class="fw-bold mb-5 text-center">Registro de clientes</h2>
 
             <form method="post" id="register-form">
 
@@ -64,7 +73,7 @@ Public_Page::headerTemplate('Gamebridge | Registro','Iniciar sesión');
       </div>
     </div>
   </div>
-</section>
+
 
 <?php
 // Se imprime la plantilla del pie enviando el nombre del controlador para la página web.

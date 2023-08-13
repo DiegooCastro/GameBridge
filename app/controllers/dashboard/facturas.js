@@ -30,24 +30,20 @@ function fillTable(dataset) {
     });
     // Se agregan las filas al cuerpo de la tabla mediante su id para mostrar los registros.
     document.getElementById('tbody-rows').innerHTML = content;
-    // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.
-    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
 }
 
 // Método manejador de eventos que se ejecuta cuando se envía el formulario de buscar.
-document.getElementById('search-form').addEventListener('submit', function (event) {
-    // Se evita recargar la página web después de enviar el formulario.
-    event.preventDefault();
+function search(){
     // Se llama a la función que realiza la búsqueda. Se encuentra en el archivo components.js
     searchRows(API_FACTURAS, 'search-form');
-});
+}
 
 //Función para cargar los productos de una factura
 function openAddressDialog(id) {
     getTotal(id);
     document.getElementById('save-form').reset();
-    let instance = M.Modal.getInstance(document.getElementById('address-modal'));
-    instance.open();
+    // Abrimos el modal con JQuery
+    $('#address-modal').modal('show');
     document.getElementById('txtIdx').value = id;
     readRows2(API_FACTURAS, 'address-form');
 }
@@ -90,9 +86,8 @@ function DeleteTable() {
 function openUpdateDialog(id) {
     // Se restauran los elementos del formulario.
     document.getElementById('save-form').reset();
-    // Se abre la caja de dialogo (modal) que contiene el formulario.
-    let instance = M.Modal.getInstance(document.getElementById('save-modal'));
-    instance.open();
+    // Abrimos el modal con JQuery
+    $('#save-modal').modal('show');
     // Se asigna el título para la caja de dialogo (modal).
     document.getElementById('modal-title').textContent = 'Actualizar datos de la factura';
     // Se deshabilitan los campos de alias y contraseña.

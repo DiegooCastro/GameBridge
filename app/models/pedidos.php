@@ -201,6 +201,16 @@ class Pedidos extends Validator
         return Database::getRows($sql,$params);
     }
 
+    public function verificarPedido($idPedido)
+    {
+        $sql = 'SELECT f.idfactura
+        FROM facturas f
+        WHERE f.idfactura = ?';
+        // Cargamos los parametros en un arreglo 
+        $params = array($idPedido);
+        return Database::getRows($sql, $params);
+    }
+
     // Método para finalizar un pedido por parte del cliente.
     public function finishOrder()
     {
