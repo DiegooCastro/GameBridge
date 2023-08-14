@@ -29,7 +29,7 @@ $categoria = new Pedidos;
         $pdf->Cell(40, 10, utf8_decode('Marca'), 1, 0, 'C', 1);
         $pdf->Cell(32, 10, utf8_decode('Precio $'), 1, 0, 'C', 1);
         $pdf->Cell(26, 10, utf8_decode('Cantidad'), 1, 0, 'C', 1);
-        $pdf->Cell(32, 10, utf8_decode('Total (USD)'), 1, 1, 'C', 1);
+        $pdf->Cell(32, 10, utf8_decode('Total $'), 1, 1, 'C', 1);
         // Se establece la fuente para los datos de los productos.
         $pdf->SetFont('Helvetica', '', 11);
         // Se recorren los registros ($dataProductos) fila por fila ($rowProducto).
